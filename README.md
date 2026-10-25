@@ -1,43 +1,39 @@
-# Astro Starter Kit: Minimal
+# NDBC Handyman Services — Astro Site
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Public preview: https://devhub2025.github.io/ndbchandyman/
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Astro static site for NDBC Handyman Services (Leesburg, VA).
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
 /
-├── public/
+├── public/                 # Static assets (logo, favicon)
 ├── src/
-│   └── pages/
-│       └── index.astro
+│   ├── content/site.yaml   # Business facts, NAP, services, hours
+│   ├── data/site.js        # YAML loader used by pages
+│   ├── layouts/            # Page shell
+│   ├── pages/              # Routes
+│   └── styles/             # Global CSS
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
+## Commands
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
 | `npm install`             | Installs dependencies                            |
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm run build`           | Build production site to `./dist/`               |
+| `npm run preview`         | Preview the build locally                        |
 
-## 👀 Want to learn more?
+## Deploy
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Pushes to `main` trigger the GitHub Actions workflow in `.github/workflows/deploy.yml`,
+which builds the site and deploys it to GitHub Pages.
+
+## Content notes
+
+- NAP, hours and services are defined in `src/content/site.yaml`.
+- The address currently matches the old site (`Leesburg, VA`). Confirm with the owner
+  before final publication, because the BBB listing shows Winchester.
