@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.js';
+
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
+---
+
+<Layout>
+  <section class="hero">
+    <div class="container">
+      <h1>{site.headline}</h1>
+      <p class="lead">{site.description}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-secondary" href={`${homeUrl}contact/`}>Get a Free Estimate</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="benefits-heading">
+    <div class="container">
+      <h2 id="benefits-heading">Why choose {site.shortName}?</h2>
+      <div class="grid grid-3">
+        {site.benefits.map(benefit => (
+          <div class="card">
+            <h3>{benefit.title}</h3>
+            <p>{benefit.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="services-heading">
+    <div class="container">
+      <h2 id="services-heading">Handyman services we offer</h2>
+      <p>From small repairs to full remodels, {site.shortName} handles a wide range of home improvement and maintenance services.</p>
+      <div class="grid grid-3">
+        {site.services.slice(0, 6).map(service => (
+          <div class="card">
+            <h3>{service.category}</h3>
+            <ul class="list-unstyled">
+              {service.items.slice(0, 4).map(item => <li>{item}</li>)}
+              {service.items.length > 4 && <li>and more…</li>}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div class="actions">
+        <a class="btn btn-secondary" href={`${homeUrl}services/`}>See all services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="areas-heading">
+    <div class="container">
+      <h2 id="areas-heading">Service area</h2>
+      <p>{site.name} serves homeowners across Northern Virginia, including:</p>
+      <p>{site.serviceAreas.join(', ')}.</p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="cta-heading">
+    <div class="container" style="text-align: center;">
+      <h2 id="cta-heading">Ready to get started?</h2>
+      <p>Contact {site.shortName} about your home renovation ideas or to-do list and get a free estimate. No obligation, no hard sell.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-secondary" href={`${homeUrl}contact/`}>Request an estimate</a>
+      </div>
+    </div>
+  </section>
+</Layout>

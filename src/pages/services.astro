@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.js';
+
+const title = 'Services';
+---
+
+<Layout title={title}>
+  <section class="section">
+    <div class="container">
+      <h1>{title}</h1>
+      <p class="lead">
+        {site.name} provides installations, repairs, maintenance and remodeling services
+        throughout Northern Virginia. Place the mouse cursor over — or browse — the
+        categories below to see what we can help with.
+      </p>
+
+      <div class="grid grid-3">
+        {site.services.map(service => (
+          <div class="card service-category">
+            <h3>{service.category}</h3>
+            <ul class="list-unstyled">
+              {service.items.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="special-heading">
+    <div class="container">
+      <h2 id="special-heading">Special remodeling services</h2>
+      <p>
+        Remodeling is a lifetime investment. Kitchens, bathrooms and basements put
+        your money to good use and save a lot when done by a licensed and experienced
+        handyman. Get your place professionally remodeled with {site.shortName}.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</Layout>

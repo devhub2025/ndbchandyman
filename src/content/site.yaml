@@ -1,0 +1,209 @@
+name: NDBC Handyman Services
+shortName: NDBC
+legalName: NDBC Handyman Services
+url: https://devhub2025.github.io/ndbchandyman
+logo: /ndbchandyman/logo.svg
+base: /ndbchandyman
+
+# NAP — confirm with owner before publishing schema.
+# The original site shows Leesburg; the BBB listing shows Winchester.
+nap:
+  streetAddress: 43103 Candlewick Sq
+  addressLocality: Leesburg
+  addressRegion: VA
+  postalCode: "20176"
+  addressCountry: US
+  mapUrl: https://maps.google.com/maps?cid=14056195057977221378&hl=en
+
+contact:
+  phone: "+17038694805"
+  phoneDisplay: "(703) 869-4805"
+  email: info@ndbchandyman.com
+
+hours:
+  regular: Monday – Saturday, 7am – 7pm
+  openingHours: Mo-Sa 07:00-19:00
+  emergency: 24 / 7
+
+tagline: Handyman Services in Leesburg VA
+headline: Professional Handyman Services in Northern Virginia
+description: >
+  NDBC is your local property maintenance service in Northern Virginia.
+  Home improvement, construction, remodeling contractor and emergency services.
+
+benefits:
+  - title: Licensed
+    text: Virginia contractor license qualifies us for general building maintenance, remodeling and home repair.
+  - title: Experienced
+    text: Over twenty years serving homes across Northern Virginia.
+  - title: Insured
+    text: Business insurance and general liability cover accidental damage while we’re on duty.
+  - title: Flat Rate Prices
+    text: Competitive, affordable fixed prices — no hourly rate surprises.
+  - title: Emergencies
+    text: 24/7 emergency service for plumbing, electrical and more.
+  - title: Done Right
+    text: We get it done right the first time.
+
+serviceAreas:
+  - Alexandria
+  - Annandale
+  - Arlington
+  - Ashburn
+  - Burke
+  - Centreville
+  - Chantilly
+  - Clifton
+  - Fairfax Station
+  - Fairfax
+  - Falls Church
+  - Gainesville
+  - Great Falls
+  - Haymarket
+  - Herndon
+  - Leesburg
+  - Manassas
+  - McLean
+  - Middleburg
+  - Reston
+  - Springfield
+  - Sterling
+  - Vienna
+  - and more
+
+services:
+  - category: Cleaning
+    items:
+      - Gutters
+      - Power washing
+      - Yard clean-up
+      - Chemical cleaning
+  - category: Doors
+    items:
+      - Draft seal
+      - Carports
+      - Garage Door
+      - Gates
+      - Fly screens
+      - Door lock
+      - Door latch
+      - Caulking
+      - Door replacement
+      - Door repairs
+      - Weather strips
+  - category: Electricity
+    items:
+      - Bathroom fans
+      - Exhaust fans
+      - Ceiling fans
+      - Chandeliers
+      - Light bulbs
+      - Fluorescents
+      - Over the Range Microwave Oven
+      - Smoke alarms
+      - Switches
+      - Outlets
+      - Wall lamps
+      - Electrical installations
+  - category: Flooring
+    items:
+      - Carpet
+      - Hardwood
+      - Laminated wood
+      - Ceramic Tile
+      - Sidewalks
+      - Paving
+  - category: Kitchens
+    items:
+      - Appliances fitting
+      - Backsplash
+      - Over the Range Microwaves
+      - Oven
+      - Furniture replacement
+      - Extractors
+      - Pipe line replacement
+      - Kitchen Renovation
+      - Kitchen cabinetry
+  - category: Painting
+    items:
+      - Indoors / Outdoors
+      - Patching and Painting
+      - Painting color matching
+  - category: Patios
+    items:
+      - Deck Restore
+      - Deck Painting and Staining
+      - Pavers
+      - Stone Patios
+      - Driveway
+      - Porches
+  - category: Plumbing
+    items:
+      - Dish washer
+      - Faucets
+      - Garbage disposal
+      - Leaks
+      - Water heaters
+      - Water damage repair
+      - Floods
+      - Pipe thawing
+      - Plumbing repair
+  - category: Product Assembly
+    items:
+      - Desks, workstations & chairs
+      - Flat pack furniture
+      - Storage units & shelves
+      - Furniture assembly
+  - category: Windows
+    items:
+      - Shutters
+      - Draft seal
+      - Repair sticky windows
+      - Fly screens
+      - Latch
+      - Window Lock
+      - Caulking
+      - Weather strips
+  - category: Woodworking & Carpentry
+    items:
+      - Balusters
+      - Baseboards
+      - Closet Systems
+      - Doors
+      - Windows
+      - Framing
+      - Drywall
+      - Fencing
+      - Finish Carpentry
+      - Rotten wood replacement
+      - Siding
+      - Shoe moulding
+      - Chair rail
+      - Wooden stairs
+      - Wood trims
+      - Indoor stair repairs
+      - Stairs
+  - category: Bathrooms
+    items:
+      - Bath grab bars
+      - Bathtub
+      - Shower
+      - Countertops
+      - Vanities
+      - Ceramic tile
+      - Refinishing
+      - Resurfacing
+      - Bathroom additions
+      - Bathroom fixtures
+      - Bathroom cabinetry
+      - Bathroom lighting
+      - Bathroom design
+      - Bathroom Remodeling
+      - Bathroom Renovation Estimates
+  - category: Basements
+    items:
+      - Basement finishing
+      - Attic finishing
+      - Plastering
+      - Stucco
+      - Noisy basement stairs

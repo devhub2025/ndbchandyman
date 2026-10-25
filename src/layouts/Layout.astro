@@ -1,0 +1,101 @@
+---
+import '../styles/global.css';
+import site from '../data/site.js';
+
+export interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
+const pageTitle = title ? `${title} | ${site.shortName}` : site.tagline;
+
+const nav = [
+  { label: 'Home', href: homeUrl },
+  { label: 'Services', href: `${homeUrl}services/` },
+  { label: 'About', href: `${homeUrl}about/` },
+  { label: 'Contact', href: `${homeUrl}contact/` },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={`${homeUrl}logo.svg`} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={site.description} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={homeUrl}>
+          <img src={`${homeUrl}logo.svg`} alt={`${site.name} logo`} width="48" height="48" />
+          <span>{site.shortName}</span>
+        </a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
+          Menu
+        </button>
+        <nav id="main-nav" class="site-nav" aria-label="Main navigation">
+          <ul>
+            {nav.map(item => {
+              const isCurrent = currentPath === item.href || currentPath === item.href.replace(/\/$/, '');
+              return (
+                <li>
+                  <a href={item.href} aria-current={isCurrent ? 'page' : undefined}>{item.label}</a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        <a class="phone-header" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <strong>{site.name}</strong>
+            <p>{site.nap.streetAddress}<br />{site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}</p>
+            <p>
+              <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a><br />
+              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+            </p>
+          </div>
+          <div>
+            <strong>Hours</strong>
+            <p>{site.hours.regular}<br />Emergency: {site.hours.emergency}</p>
+          </div>
+          <div>
+            <strong>Areas served</strong>
+            <p>Northern Virginia including {site.serviceAreas.slice(0, 8).join(', ')}, and more.</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector('.nav-toggle');
+      const nav = document.querySelector('.site-nav');
+      if (toggle && nav) {
+        toggle.addEventListener('click', () => {
+          const open = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+      }
+    </script>
+  </body>
+</html>

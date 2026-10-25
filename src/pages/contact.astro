@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.js';
+
+const title = 'Contact';
+---
+
+<Layout title={title}>
+  <section class="section">
+    <div class="container">
+      <h1>Get a free estimate</h1>
+      <p class="lead">
+        Contact {site.name} about your home renovation ideas or your to-do list and
+        get a free estimate. No obligation, no hard sell.
+      </p>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h2>Call or text</h2>
+          <p>
+            <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>
+              {site.contact.phoneDisplay}
+            </a>
+          </p>
+          <p>Emergency service: {site.hours.emergency}</p>
+        </div>
+
+        <div class="card">
+          <h2>Email</h2>
+          <p>
+            <a class="btn btn-secondary" href={`mailto:${site.contact.email}`}>
+              {site.contact.email}
+            </a>
+          </p>
+          <p>We will get back to you as soon as possible.</p>
+        </div>
+      </div>
+
+      <h2>Location and hours</h2>
+      <p>
+        <strong>{site.name}</strong><br />
+        {site.nap.streetAddress}<br />
+        {site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}
+      </p>
+      <p>
+        <strong>Trading hours:</strong> {site.hours.regular}<br />
+        <strong>Emergency service:</strong> {site.hours.emergency}
+      </p>
+      <p>
+        <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">
+          View on Google Maps
+        </a>
+      </p>
+
+      <h2>What to include in your message</h2>
+      <ul>
+        <li>A brief description of the project or repair</li>
+        <li>Your location in Northern Virginia</li>
+        <li>The best time to reach you</li>
+        <li>Any photos that help explain the work</li>
+      </ul>
+    </div>
+  </section>
+</Layout>

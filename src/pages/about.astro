@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.js';
+
+const title = 'About Us';
+---
+
+<Layout title={title}>
+  <section class="section">
+    <div class="container">
+      <h1>{title}</h1>
+
+      <p class="lead">
+        {site.name} is a local handyman business serving Northern Virginia, not a franchise.
+        We are just one call away for home repairs, remodeling ideas, installations,
+        odd jobs and preventative maintenance.
+      </p>
+
+      <h2>Why {site.shortName}?</h2>
+      <div class="grid grid-2">
+        {site.benefits.map(benefit => (
+          <div class="card">
+            <h3>{benefit.title}</h3>
+            <p>{benefit.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>About us</h2>
+      <p>
+        Over twenty years working with home improvement companies has given us the
+        edge we need to offer you the best in home repair and maintenance services.
+        Top property management companies usually only hire experienced staff because
+        they know experience saves time and money for both parties. We get it done
+        right the first time.
+      </p>
+      <p>
+        We are not a handyman franchise. {site.shortName} is a local business in
+        Leesburg, VA working for you year round. We support our community just like
+        you do. Therefore, we know Northern Virginia homes better — what they need and
+        how to efficiently fix or improve them.
+      </p>
+      <p>
+        <strong>Service area:</strong> Northern Virginia including {site.serviceAreas.join(', ')}.
+      </p>
+
+      <h2>Licenses and insurance</h2>
+      <p>
+        {site.shortName} is a licensed business. We hold the license that certifies us
+        to perform general building maintenance, remodeling contractor, handyman and
+        home repair contractor work. We also carry business insurance and general
+        liability to cover any accidental damage on your property when we are on duty.
+      </p>
+
+      <h2>Pricing and guarantee</h2>
+      <p>
+        We do not charge per hour. We provide a competitive and affordable flat-fee
+        price for the service you require, backed by a one-year guarantee on
+        maintenance or remodeling services. Guarantee terms may vary for special
+        services or chosen materials — please call for details.
+      </p>
+
+      <h2>Home emergency services</h2>
+      <p>
+        Have you found yourself in an electrical or plumbing emergency? {site.shortName}
+        can help. At any time, call <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        and we will be there ASAP.
+      </p>
+    </div>
+  </section>
+</Layout>
