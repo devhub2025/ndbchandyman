@@ -2,44 +2,299 @@
 import '../styles/global.css';
 import site from '../data/site.js';
 
-export interface Props {
-  title?: string;
+export interface BreadcrumbItem {
+  name: string;
+  href: string;
 }
 
-const { title } = Astro.props;
+export interface Props {
+  title?: string;
+  fullTitle?: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  noindex?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  pageSchema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  fullTitle,
+  description,
+  ogType = 'website',
+  ogImage,
+  noindex = false,
+  breadcrumbs = [],
+  pageSchema,
+} = Astro.props;
+
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
-const pageTitle = title ? `${title} | ${site.shortName}` : site.tagline;
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
+const siteRootUrl = new URL(homeUrl, siteOrigin).toString();
+
+const rawPathname = Astro.url.pathname;
+const normalizedPathname = rawPathname.endsWith('/') ? rawPathname : `${rawPathname}/`;
+const canonicalUrl = new URL(normalizedPathname, siteOrigin).toString();
+
+const pageTitle = fullTitle
+  ? fullTitle
+  : title
+    ? `${title} | ${site.name}`
+    : `Handyman Services in ${site.nap.addressLocality}, ${site.nap.addressRegion} | ${site.name}`;
+
+const metaDescription = (description || site.description || '').trim().replace(/\s+/g, ' ');
+const socialImageUrl = new URL(
+  ogImage || `${homeUrl}images/deck-restore-leesburg-va.jpg`,
+  siteOrigin
+).toString();
+
+// Preview vs. Production Indexing Gate: prevent github.io preview from competing with production domain
+const isPreviewHost =
+  siteOrigin.includes('github.io') && import.meta.env.PUBLIC_INDEXABLE !== 'true';
+const robotsDirective =
+  noindex || isPreviewHost
+    ? 'noindex, nofollow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
 const nav = [
   { label: 'Home', href: homeUrl },
   { label: 'Services', href: `${homeUrl}services/` },
+  { label: 'Deck Restoration', href: `${homeUrl}services/deck-restoration/` },
+  { label: 'Portfolio', href: `${homeUrl}portfolio/` },
+  { label: 'FAQ', href: `${homeUrl}faq/` },
+  { label: 'Tips', href: `${homeUrl}tips/` },
   { label: 'About', href: `${homeUrl}about/` },
   { label: 'Contact', href: `${homeUrl}contact/` },
 ];
 
-const currentPath = Astro.url.pathname;
+const currentPath = normalizedPathname;
+
+// Build linked @graph JSON-LD
+const businessId = `${siteRootUrl}#business`;
+const websiteId = `${siteRootUrl}#website`;
+const webpageId = `${canonicalUrl}#webpage`;
+const breadcrumbId = `${canonicalUrl}#breadcrumb`;
+
+const cleanCities = (site.serviceAreas || []).filter(
+  (area: string) => area && area.toLowerCase() !== 'and more'
+);
+
+const offerCatalogItems = (site.services || []).map((group: { category: string; items: string[] }) => ({
+  '@type': 'OfferCatalog',
+  name: group.category,
+  itemListElement: (group.items || []).map((serviceName: string) => ({
+    '@type': 'Offer',
+    itemOffered: {
+      '@type': 'Service',
+      name: serviceName,
+      provider: { '@id': businessId },
+    },
+  })),
+}));
+
+const businessNode = {
+  '@type': ['HomeAndConstructionBusiness', 'GeneralContractor'],
+  '@id': businessId,
+  name: site.name,
+  alternateName: site.shortName,
+  legalName: site.legalName,
+  url: siteRootUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: new URL(`${homeUrl}logo.svg`, siteOrigin).toString(),
+  },
+  image: socialImageUrl,
+  description: String(site.description || '').trim(),
+  telephone: site.contact.phone,
+  email: site.contact.email,
+  priceRange: '$$',
+  currenciesAccepted: 'USD',
+  paymentAccepted: 'Cash, Check, Credit Card, Debit Card',
+  slogan: 'Flat-rate pricing, licensed Virginia contractor, 1-year workmanship guarantee',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.nap.streetAddress,
+    addressLocality: site.nap.addressLocality,
+    addressRegion: site.nap.addressRegion,
+    postalCode: String(site.nap.postalCode),
+    addressCountry: site.nap.addressCountry,
+  },
+  hasMap: site.nap.mapUrl,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+      ],
+      opens: '07:00',
+      closes: '19:00',
+    },
+  ],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      telephone: site.contact.phone,
+      email: site.contact.email,
+      areaServed: 'US-VA',
+      availableLanguage: ['en-US'],
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'emergency service',
+      telephone: site.contact.phone,
+      areaServed: 'US-VA',
+      availableLanguage: ['en-US'],
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: [
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ],
+        opens: '00:00',
+        closes: '23:59',
+      },
+    },
+  ],
+  areaServed: [
+    ...cleanCities.map((city: string) => ({
+      '@type': 'City',
+      name: `${city}, VA`,
+    })),
+    {
+      '@type': 'AdministrativeArea',
+      name: 'Northern Virginia',
+    },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `${site.name} Home Repair & Remodeling Catalog`,
+    itemListElement: offerCatalogItems,
+  },
+};
+
+const websiteNode = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  url: siteRootUrl,
+  name: site.name,
+  inLanguage: 'en-US',
+  publisher: { '@id': businessId },
+};
+
+const webpageNode: Record<string, unknown> = {
+  '@type': 'WebPage',
+  '@id': webpageId,
+  url: canonicalUrl,
+  name: pageTitle,
+  description: metaDescription,
+  inLanguage: 'en-US',
+  isPartOf: { '@id': websiteId },
+  about: { '@id': businessId },
+};
+
+const graphNodes: Record<string, unknown>[] = [businessNode, websiteNode, webpageNode];
+
+if (breadcrumbs.length > 0) {
+  webpageNode.breadcrumb = { '@id': breadcrumbId };
+  graphNodes.push({
+    '@type': 'BreadcrumbList',
+    '@id': breadcrumbId,
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      item: new URL(crumb.href, siteOrigin).toString(),
+    })),
+  });
+}
+
+if (pageSchema) {
+  if (Array.isArray(pageSchema)) {
+    graphNodes.push(...pageSchema);
+  } else {
+    graphNodes.push(pageSchema);
+  }
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': graphNodes,
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href={`${homeUrl}logo.svg`} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" type="application/xml" href={`${homeUrl}sitemap.xml`} />
+    <meta name="robots" content={robotsDirective} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="geo.region" content="US-VA" />
+    <meta name="geo.placename" content={`${site.nap.addressLocality}, ${site.nap.addressRegion}`} />
     <title>{pageTitle}</title>
-    <meta name="description" content={site.description} />
+    <meta name="description" content={metaDescription} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={`${site.name} — ${site.tagline}`} />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={socialImageUrl} />
+
+    <!-- Structured Data (@graph JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
+    <div class="trust-topbar" role="region" aria-label="Service credentials and emergency contact">
+      <div class="container">
+        <ul class="trust-pills">
+          <li><span class="trust-dot" aria-hidden="true">●</span> Virginia DPOR Licensed &amp; Insured</li>
+          <li><span class="trust-dot" aria-hidden="true">●</span> Flat-Rate Fixed Pricing</li>
+          <li><span class="trust-dot" aria-hidden="true">●</span> 1-Year Workmanship Guarantee</li>
+          <li><span class="trust-dot" aria-hidden="true">●</span> 20+ Years in Northern VA</li>
+        </ul>
+        <div class="topbar-emergency">
+          24/7 Emergency Service: <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+
     <header class="site-header">
       <div class="container">
         <a class="brand" href={homeUrl}>
-          <img src={`${homeUrl}logo.svg`} alt={`${site.name} logo`} width="48" height="48" />
-          <span>{site.shortName}</span>
+          <img src={`${homeUrl}logo.svg`} alt={`${site.name} logo`} width="46" height="46" />
+          <span class="brand-text">
+            <span class="brand-name">{site.shortName} Handyman</span>
+            <span class="brand-sub">Leesburg &amp; Northern Virginia</span>
+          </span>
         </a>
         <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-          Menu
+          Menu ▾
         </button>
         <nav id="main-nav" class="site-nav" aria-label="Main navigation">
           <ul>
@@ -53,9 +308,30 @@ const currentPath = Astro.url.pathname;
             })}
           </ul>
         </nav>
-        <a class="phone-header" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+        <div class="header-cta">
+          <a class="phone-header" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+          <a class="btn btn-accent btn-sm" href={`${homeUrl}contact/`}>Free Estimate</a>
+        </div>
       </div>
     </header>
+
+    {breadcrumbs.length > 0 && (
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <div class="container">
+          <ol class="breadcrumb-list">
+            {breadcrumbs.map((crumb, idx) => (
+              <li>
+                {idx < breadcrumbs.length - 1 ? (
+                  <a href={crumb.href}>{crumb.name}</a>
+                ) : (
+                  <span aria-current="page">{crumb.name}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </nav>
+    )}
 
     <main>
       <slot />
@@ -68,24 +344,51 @@ const currentPath = Astro.url.pathname;
             <strong>{site.name}</strong>
             <p>{site.nap.streetAddress}<br />{site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}</p>
             <p>
-              <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a><br />
-              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+              Phone: <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a><br />
+              Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
+              <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">View on Google Maps ↗</a>
             </p>
           </div>
           <div>
-            <strong>Hours</strong>
-            <p>{site.hours.regular}<br />Emergency: {site.hours.emergency}</p>
+            <strong>Explore Services</strong>
+            <ul class="footer-links">
+              <li><a href={`${homeUrl}services/`}>All Handyman Services</a></li>
+              <li><a href={`${homeUrl}services/deck-restoration/`}>Wooden Deck Restoration</a></li>
+              <li><a href={`${homeUrl}portfolio/`}>Before &amp; After Portfolio</a></li>
+              <li><a href={`${homeUrl}tips/`}>Home Maintenance Pro Tips</a></li>
+              <li><a href={`${homeUrl}faq/`}>Pricing &amp; Warranty FAQ</a></li>
+              <li><a href={`${homeUrl}about/`}>About &amp; DPOR Licensing</a></li>
+              <li><a href={`${homeUrl}contact/`}>Request a Free Estimate</a></li>
+            </ul>
           </div>
           <div>
-            <strong>Areas served</strong>
-            <p>Northern Virginia including {site.serviceAreas.slice(0, 8).join(', ')}, and more.</p>
+            <strong>Hours &amp; Payment</strong>
+            <p>
+              <strong>Regular:</strong> {site.hours.regular}<br />
+              <strong>Emergency:</strong> {site.hours.emergency} (Plumbing, Electrical &amp; Urgent Repairs)
+            </p>
+            <p>
+              <strong>Payment Accepted:</strong><br />
+              Cash, Check, Credit &amp; Debit Cards<br />
+              <em>Flat-rate pricing · 1-year guarantee</em>
+            </p>
+          </div>
+          <div>
+            <strong>Northern VA Service Area</strong>
+            <p>Serving Loudoun &amp; Fairfax Counties including {site.serviceAreas.slice(0, 12).join(', ')}, and surrounding communities.</p>
           </div>
         </div>
         <div class="footer-bottom">
-          &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
+          <span>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</span>
+          <span>Virginia DPOR Licensed Contractor · Insured · <a href={`${homeUrl}sitemap.xml`}>Sitemap</a></span>
         </div>
       </div>
     </footer>
+
+    <div class="mobile-sticky-bar" role="region" aria-label="Quick contact actions">
+      <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+      <a class="btn btn-accent" href={`${homeUrl}contact/`}>Free Estimate</a>
+    </div>
 
     <script>
       const toggle = document.querySelector('.nav-toggle');

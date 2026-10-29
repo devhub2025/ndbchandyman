@@ -2,24 +2,131 @@
 import Layout from '../layouts/Layout.astro';
 import site from '../data/site.js';
 
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'Services';
+const fullTitle = 'Home Repair & Remodeling Services | Leesburg & NoVA';
+const description =
+  'Full-service handyman in Northern Virginia: kitchen & bathroom remodeling, deck restoration, carpentry, plumbing, electrical, flooring, and painting.';
+const breadcrumbs = [
+  { name: 'Home', href: homeUrl },
+  { name: 'Services', href: `${homeUrl}services/` },
+];
 ---
 
-<Layout title={title}>
-  <section class="section">
+<Layout title={title} fullTitle={fullTitle} description={description} breadcrumbs={breadcrumbs}>
+  <section class="page-hero">
     <div class="container">
-      <h1>{title}</h1>
+      <span class="hero-badge">13 Trade Categories · Flat-Rate Pricing</span>
+      <h1>Handyman, Home Repair &amp; Remodeling Services</h1>
       <p class="lead">
-        {site.name} provides installations, repairs, maintenance and remodeling services
-        throughout Northern Virginia. Place the mouse cursor over — or browse — the
-        categories below to see what we can help with.
+        {site.name} provides licensed installations, structural repairs, preventative maintenance,
+        and full remodeling throughout Leesburg and Northern Virginia—all backed by upfront flat-fee
+        pricing and a 1-year guarantee.
       </p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="featured-specialties">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">High-Impact Renovations</span>
+        <h2 id="featured-specialties">Featured remodeling &amp; exterior restoration specialties</h2>
+        <p>
+          Remodeling is a lifetime investment. Kitchens, bathrooms, basements, and decks add lasting
+          value when completed by a Virginia DPOR-licensed contractor.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="project-card">
+          <div class="project-media">
+            <span class="project-badge">Dedicated Service Page</span>
+            <img
+              src={`${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`}
+              alt="Wooden deck restoration and staining in Leesburg, VA"
+              width="800"
+              height="600"
+              loading="eager"
+            />
+          </div>
+          <div class="project-body">
+            <h3>Wooden Deck Restoration</h3>
+            <p style="margin: 0 0 0.75rem; color: var(--color-text-light);">
+              USBC structural inspection, rotted board &amp; sub-floor replacement, sanding, power
+              washing, and commercial-grade sealing and staining.
+            </p>
+            <a class="project-meta" href={`${homeUrl}services/deck-restoration/`}>
+              View 6-Step Deck Restoration Guide →
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-media">
+            <span class="project-badge">24-Hr Flood-Tested Pans</span>
+            <img
+              src={`${homeUrl}images/portfolio/walk-in-tiled-shower.jpg`}
+              alt="Bathroom remodeling and walk-in tiled shower conversion in Northern Virginia"
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+          </div>
+          <div class="project-body">
+            <h3>Bathroom Remodeling &amp; Tile</h3>
+            <p style="margin: 0 0 0.75rem; color: var(--color-text-light);">
+              Tub-to-shower conversions, custom ceramic tile surrounds, vanities, countertops, grab
+              bars, lighting, and fixture upgrades.
+            </p>
+            <a class="project-meta" href={`${homeUrl}portfolio/`}>
+              See Bathroom Portfolio Photos →
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-media">
+            <span class="project-badge">Cabinetry, Tile &amp; Plumbing</span>
+            <img
+              src={`${homeUrl}images/portfolio/kitchen-renovation-stages.jpg`}
+              alt="Kitchen remodeling, cabinetry, and backsplash installation in Northern Virginia"
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+          </div>
+          <div class="project-body">
+            <h3>Kitchen &amp; Basement Remodeling</h3>
+            <p style="margin: 0 0 0.75rem; color: var(--color-text-light);">
+              Kitchen cabinetry, tile backsplashes, over-the-range microwaves, plumbing line
+              updates, and full basement/attic finishing.
+            </p>
+            <a class="project-meta" href={`${homeUrl}tips/`}>
+              Read Pre-Remodeling Checklists →
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="categories-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">Complete Service Directory</span>
+        <h2 id="categories-heading">All 13 handyman service categories</h2>
+        <p>
+          Browse our complete list of interior and exterior services below. Need multiple items
+          handled in a single visit? Send us your full to-do list for one combined flat-rate quote.
+        </p>
+      </div>
 
       <div class="grid grid-3">
         {site.services.map(service => (
           <div class="card service-category">
             <h3>{service.category}</h3>
-            <ul class="list-unstyled">
+            <ul class="check-list">
               {service.items.map(item => <li>{item}</li>)}
             </ul>
           </div>
@@ -28,16 +135,16 @@ const title = 'Services';
     </div>
   </section>
 
-  <section class="section alt" aria-labelledby="special-heading">
-    <div class="container">
-      <h2 id="special-heading">Special remodeling services</h2>
-      <p>
-        Remodeling is a lifetime investment. Kitchens, bathrooms and basements put
-        your money to good use and save a lot when done by a licensed and experienced
-        handyman. Get your place professionally remodeled with {site.shortName}.
+  <section class="section dark" aria-labelledby="special-heading">
+    <div class="container" style="text-align: center;">
+      <h2 id="special-heading">Get your flat-rate estimate today</h2>
+      <p style="max-width: 640px; margin-inline: auto; color: #d9e6dc;">
+        We never charge by the hour. Call {site.contact.phoneDisplay} or send your project list for
+        a fast, no-obligation flat-fee quote.
       </p>
-      <div class="actions">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+      <div class="actions center">
+        <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Estimate</a>
+        <a class="btn btn-outline-light" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
       </div>
     </div>
   </section>

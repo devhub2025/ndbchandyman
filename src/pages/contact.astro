@@ -2,63 +2,199 @@
 import Layout from '../layouts/Layout.astro';
 import site from '../data/site.js';
 
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'Contact';
+const fullTitle = 'Request a Free Handyman Estimate in Leesburg, VA | NDBC';
+const description =
+  'Call (703) 869-4805 or request a free, no-obligation flat-rate estimate for home repairs, remodeling, or 24/7 emergency handyman service in Northern VA.';
+const breadcrumbs = [
+  { name: 'Home', href: homeUrl },
+  { name: 'Contact', href: `${homeUrl}contact/` },
+];
+
+const cleanAreas = (site.serviceAreas || []).filter(
+  (area: string) => area && area.toLowerCase() !== 'and more'
+);
 ---
 
-<Layout title={title}>
-  <section class="section">
+<Layout title={title} fullTitle={fullTitle} description={description} breadcrumbs={breadcrumbs}>
+  <section class="page-hero">
     <div class="container">
-      <h1>Get a free estimate</h1>
+      <span class="hero-badge">Online Quotes in Hours · Same-Day On-Site Estimates</span>
+      <h1>Get a Free Flat-Rate Estimate</h1>
       <p class="lead">
-        Contact {site.name} about your home renovation ideas or your to-do list and
-        get a free estimate. No obligation, no hard sell.
+        Contact {site.name} about your home renovation ideas or repair to-do list. No hourly rate
+        surprises, no obligation, and no hard sell.
       </p>
-
-      <div class="grid grid-2">
-        <div class="card">
-          <h2>Call or text</h2>
-          <p>
-            <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>
-              {site.contact.phoneDisplay}
-            </a>
-          </p>
-          <p>Emergency service: {site.hours.emergency}</p>
-        </div>
-
-        <div class="card">
-          <h2>Email</h2>
-          <p>
-            <a class="btn btn-secondary" href={`mailto:${site.contact.email}`}>
-              {site.contact.email}
-            </a>
-          </p>
-          <p>We will get back to you as soon as possible.</p>
-        </div>
-      </div>
-
-      <h2>Location and hours</h2>
-      <p>
-        <strong>{site.name}</strong><br />
-        {site.nap.streetAddress}<br />
-        {site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}
-      </p>
-      <p>
-        <strong>Trading hours:</strong> {site.hours.regular}<br />
-        <strong>Emergency service:</strong> {site.hours.emergency}
-      </p>
-      <p>
-        <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">
-          View on Google Maps
-        </a>
-      </p>
-
-      <h2>What to include in your message</h2>
-      <ul>
-        <li>A brief description of the project or repair</li>
-        <li>Your location in Northern Virginia</li>
-        <li>The best time to reach you</li>
-        <li>Any photos that help explain the work</li>
-      </ul>
     </div>
   </section>
+
+  <section class="section" aria-labelledby="estimate-form-heading">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: start;">
+        <div class="card">
+          <span class="section-eyebrow">Fast Online Quote</span>
+          <h2 id="estimate-form-heading" style="margin-top: 0.25rem;">Request your free estimate</h2>
+          <p style="color: var(--color-text-light); margin-top: 0;">
+            Fill out your project details below. Online quotes are typically ready within a few hours,
+            or we can schedule a same-day on-site visit.
+          </p>
+
+          <form id="estimate-form" class="estimate-form" data-email={site.contact.email}>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="full-name">Your Name *</label>
+                <input id="full-name" name="name" type="text" required placeholder="Jane Doe" autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input id="phone" name="phone" type="tel" required placeholder="(703) 555-0199" autocomplete="tel" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
+              </div>
+              <div class="form-group">
+                <label for="city">City in Northern VA *</label>
+                <select id="city" name="city" required>
+                  <option value="Leesburg" selected>Leesburg, VA</option>
+                  {cleanAreas
+                    .filter((a: string) => a !== 'Leesburg')
+                    .map((area: string) => (
+                      <option value={area}>{area}, VA</option>
+                    ))}
+                  <option value="Other Northern VA">Other Northern VA Location</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="service-type">Primary Service Needed *</label>
+                <select id="service-type" name="service" required>
+                  <option value="Wooden Deck Restoration">Wooden Deck Restoration &amp; Staining</option>
+                  <option value="Bathroom Remodeling">Bathroom Remodeling &amp; Tile</option>
+                  <option value="Kitchen Remodeling">Kitchen Remodeling &amp; Cabinets</option>
+                  <option value="General Handyman / To-Do List">General Handyman / Multiple Repairs</option>
+                  {site.services.map((s: { category: string }) => (
+                    <option value={s.category}>{s.category}</option>
+                  ))}
+                  <option value="24/7 Emergency Repair">24/7 Emergency Plumbing / Electrical</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="quote-type">Preferred Estimate Type</label>
+                <select id="quote-type" name="quoteType">
+                  <option value="Online Quote (Within Hours)">Online Quote (Ready Within Hours)</option>
+                  <option value="On-Site Visit (Same-Day Quote)">On-Site Visit (Same-Day Quote)</option>
+                  <option value="Call Me First">Call Me at a Convenient Time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="details">Project Description &amp; Best Time to Reach You *</label>
+              <textarea
+                id="details"
+                name="details"
+                rows="4"
+                required
+                placeholder="Describe the repair or renovation idea, approximate size, and the best time for us to call you..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-accent" style="width: 100%;">
+              Send Free Estimate Request
+            </button>
+
+            <div
+              id="form-feedback"
+              role="status"
+              aria-live="polite"
+              style="display: none; padding: 1rem; border-radius: var(--radius-sm); background: var(--color-primary-soft); border: 1px solid var(--color-primary); color: var(--color-primary-dark); font-weight: 600;"
+            ></div>
+          </form>
+        </div>
+
+        <div class="grid" style="gap: 1.25rem;">
+          <div class="card">
+            <h3>Direct Call, Text, or 24/7 Emergency</h3>
+            <p style="margin-top: 0;">
+              Prefer to talk directly with a handyman or facing an urgent plumbing or electrical issue?
+            </p>
+            <p>
+              <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>
+                Call {site.contact.phoneDisplay}
+              </a>
+            </p>
+            <p style="margin-bottom: 0;">
+              <strong>Regular Hours:</strong> {site.hours.regular}<br />
+              <strong>Emergency Service:</strong> {site.hours.emergency}
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Email &amp; Office Location</h3>
+            <p style="margin-top: 0;">
+              <strong>{site.name}</strong><br />
+              {site.nap.streetAddress}<br />
+              {site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}
+            </p>
+            <p>
+              <strong>Email:</strong>{' '}
+              <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
+              <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">
+                Open in Google Maps ↗
+              </a>
+            </p>
+            <p style="margin-bottom: 0; font-size: 0.92rem; color: var(--color-text-light);">
+              <strong>Accepted Payments:</strong> Cash, Check, Credit &amp; Debit Cards.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>What to include for the fastest quote</h3>
+            <ul class="check-list">
+              <li>A brief description of the project or repair to-do list</li>
+              <li>Your town/neighborhood in Northern Virginia</li>
+              <li>Whether you prefer an online quote or an on-site visit</li>
+              <li>Any photos of the area (you can attach photos via email or text)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById('estimate-form') as HTMLFormElement | null;
+    const feedback = document.getElementById('form-feedback');
+    if (form && feedback) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        const name = String(data.get('name') || '');
+        const phone = String(data.get('phone') || '');
+        const email = String(data.get('email') || '');
+        const city = String(data.get('city') || '');
+        const service = String(data.get('service') || '');
+        const quoteType = String(data.get('quoteType') || '');
+        const details = String(data.get('details') || '');
+        const targetEmail = form.getAttribute('data-email') || 'info@ndbchandyman.com';
+
+        const subject = encodeURIComponent(`Free Estimate Request: ${service} in ${city} — ${name}`);
+        const body = encodeURIComponent(
+          `Name: ${name}\nPhone: ${phone}\nEmail: ${email}\nLocation: ${city}, VA\nService: ${service}\nEstimate Preference: ${quoteType}\n\nProject Details:\n${details}`
+        );
+
+        feedback.style.display = 'block';
+        feedback.innerHTML = `✓ Estimate request prepared for <strong>${name}</strong> (${service} in ${city}). <a href="mailto:${targetEmail}?subject=${subject}&body=${body}">Click here if your email app did not open automatically</a>, or call <a href="tel:+17038694805">(703) 869-4805</a>.`;
+        window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+      });
+    }
+  </script>
 </Layout>

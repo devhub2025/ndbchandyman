@@ -1,0 +1,229 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.js';
+
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
+
+const title = 'Portfolio';
+const fullTitle = 'Before & After Handyman Projects in Northern VA | NDBC';
+const description =
+  'Browse real before-and-after photos of deck restorations, bathroom remodels, kitchens, patios, and home repairs completed across Northern Virginia.';
+
+const breadcrumbs = [
+  { name: 'Home', href: homeUrl },
+  { name: 'Portfolio', href: `${homeUrl}portfolio/` },
+];
+
+const projects = [
+  {
+    title: 'Wooden Deck Restoration, Rot Repair & Staining',
+    category: 'Decks & Patios',
+    badge: 'Before & After',
+    location: 'Leesburg, VA',
+    image: `${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`,
+    alt: 'Before and after wooden deck restoration, board replacement, and protective staining in Leesburg, VA',
+    summary: 'Replaced rotted deck boards and stair treads, power washed, sanded handrails, and applied weatherproof exterior stain.',
+  },
+  {
+    title: 'Brick Paver Patio Leveling & Restoration',
+    category: 'Decks & Patios',
+    badge: 'Before & After',
+    location: 'Ashburn, VA',
+    image: `${homeUrl}images/portfolio/patio-pavers-before-after.jpg`,
+    alt: 'Before and after backyard brick paver patio re-leveling, cleaning, and joint sanding in Northern Virginia',
+    summary: 'Lifted sunken pavers, re-compacted base, pressure washed moss buildup, and locked joints with polymeric sand.',
+  },
+  {
+    title: 'Outdoor Ceramic Tile Patio Installation',
+    category: 'Decks & Patios',
+    badge: 'Before & After',
+    location: 'Reston, VA',
+    image: `${homeUrl}images/portfolio/patio-ceramic-tile-before-after.jpg`,
+    alt: 'Before and after outdoor ceramic tile patio renovation in Northern Virginia',
+    summary: 'Prepared concrete slab substrate, corrected drainage slope, and installed frost-resistant exterior ceramic tile.',
+  },
+  {
+    title: 'Front Entryway Tiled Footpath & Step Rebuild',
+    category: 'Flooring & Entry',
+    badge: 'Before & After',
+    location: 'Leesburg, VA',
+    image: `${homeUrl}images/portfolio/tiled-footpath-front-door-before-after.jpg`,
+    alt: 'Before and after front door tiled walkway and step masonry repair in Leesburg, VA',
+    summary: 'Repaired cracked concrete walkway, resurfaced front step, and laid slip-resistant exterior stone tile.',
+  },
+  {
+    title: 'Natural Stone Footpath & Entry Landing',
+    category: 'Flooring & Entry',
+    badge: 'Before & After',
+    location: 'McLean, VA',
+    image: `${homeUrl}images/portfolio/footpath-stone-tile-before-after.jpg`,
+    alt: 'Before and after front walkway stone tile installation in Northern Virginia',
+    summary: 'Transformed worn concrete entry path with custom-fitted stone tile and weather-sealed grout.',
+  },
+  {
+    title: 'Custom Walk-In Tiled Shower Conversion',
+    category: 'Bathrooms',
+    badge: 'Remodel',
+    location: 'Sterling, VA',
+    image: `${homeUrl}images/portfolio/walk-in-tiled-shower.jpg`,
+    alt: 'Custom walk-in ceramic tiled shower with recessed niche and frameless glass in Northern Virginia',
+    summary: 'Full tub-to-shower conversion with sloped mortar pan, 24-hour waterproof liner flood test, and floor-to-ceiling ceramic tile.',
+  },
+  {
+    title: 'Arched Tiled Shower Enclosure & Glass Door',
+    category: 'Bathrooms',
+    badge: 'Remodel',
+    location: 'Herndon, VA',
+    image: `${homeUrl}images/portfolio/shower-arch-tiled-with-glass-door.jpg`,
+    alt: 'Custom arched tiled shower entrance with glass door and mosaic accent tile in Northern Virginia',
+    summary: 'Framed custom arch opening, waterproofed enclosure, and installed decorative tile surround and glass door.',
+  },
+  {
+    title: 'Drop-In Bathtub & Tiled Deck Surround',
+    category: 'Bathrooms',
+    badge: 'Remodel',
+    location: 'Vienna, VA',
+    image: `${homeUrl}images/portfolio/bathtub-tiled-deck.jpg`,
+    alt: 'Tiled bathtub deck surround and fixture installation in Northern Virginia bathroom',
+    summary: 'Built custom tub deck framing, waterproofed backer board, and installed large-format diagonal ceramic tile.',
+  },
+  {
+    title: 'Full Kitchen Renovation & Cabinetry Stages',
+    category: 'Kitchens',
+    badge: 'Before & After',
+    location: 'Fairfax, VA',
+    image: `${homeUrl}images/portfolio/kitchen-renovation-stages.jpg`,
+    alt: 'Multi-stage kitchen remodeling showing plumbing inspection, cabinet installation, and finished countertops',
+    summary: 'Inspected wall plumbing lines, installed new cabinetry, fitted countertops, backsplash tile, and appliances.',
+  },
+  {
+    title: 'Kitchen Cabinetry, Oven & Over-the-Range Microwave',
+    category: 'Kitchens',
+    badge: 'Installation',
+    location: 'Centreville, VA',
+    image: `${homeUrl}images/portfolio/kitchen-oven-microwave-sink-kitchen-cabinets.jpg`,
+    alt: 'Installed wood kitchen cabinets, stainless range, over-the-range microwave, and sink in Northern Virginia',
+    summary: 'Complete appliance fitting, exhaust venting, sink plumbing hookup, and cabinet hardware alignment.',
+  },
+  {
+    title: 'Exterior Front Door, Frame & Weatherstripping',
+    category: 'Flooring & Entry',
+    badge: 'Carpentry',
+    location: 'Leesburg, VA',
+    image: `${homeUrl}images/portfolio/new-white-front-door-and-frame.jpg`,
+    alt: 'New white exterior front door, frame, lockset, and draft seal installation in Leesburg, VA',
+    summary: 'Removed rotted jamb, squared new insulated entry door, installed deadbolt hardware, caulking, and weather strips.',
+  },
+];
+
+const gallerySchema = {
+  '@type': 'CollectionPage',
+  '@id': `${new URL(`${homeUrl}portfolio/`, siteOrigin).toString()}#collection`,
+  name: fullTitle,
+  description,
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: projects.map((proj, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'ImageObject',
+        name: proj.title,
+        description: proj.summary,
+        contentUrl: new URL(proj.image, siteOrigin).toString(),
+      },
+    })),
+  },
+};
+---
+
+<Layout
+  title={title}
+  fullTitle={fullTitle}
+  description={description}
+  ogImage={`${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`}
+  breadcrumbs={breadcrumbs}
+  pageSchema={gallerySchema}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Real Northern Virginia Craftsmanship</span>
+      <h1>Before &amp; After Handyman Project Portfolio</h1>
+      <p class="lead">
+        Every photo below is real work completed by {site.name} across Leesburg, Loudoun County, and
+        Fairfax County—from code-compliant deck restorations to custom tile showers and kitchens.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="gallery-heading">
+    <div class="container">
+      <h2 id="gallery-heading" class="visually-hidden">Project Gallery by Category</h2>
+
+      <div class="filter-bar" role="toolbar" aria-label="Filter projects by category">
+        <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All Projects ({projects.length})</button>
+        <button class="filter-btn" type="button" data-filter="Decks & Patios" aria-pressed="false">Decks &amp; Patios</button>
+        <button class="filter-btn" type="button" data-filter="Bathrooms" aria-pressed="false">Bathrooms</button>
+        <button class="filter-btn" type="button" data-filter="Kitchens" aria-pressed="false">Kitchens</button>
+        <button class="filter-btn" type="button" data-filter="Flooring & Entry" aria-pressed="false">Doors, Walkways &amp; Flooring</button>
+      </div>
+
+      <div class="grid grid-3" id="portfolio-grid">
+        {projects.map((project, index) => (
+          <article class="project-card" data-category={project.category}>
+            <div class="project-media">
+              <span class="project-badge">{project.badge} · {project.category}</span>
+              <img
+                src={project.image}
+                alt={project.alt}
+                width="800"
+                height="600"
+                loading={index < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </div>
+            <div class="project-body">
+              <h3>{project.title}</h3>
+              <p style="margin: 0; color: var(--color-text-light); font-size: 0.95rem;">
+                {project.summary}
+              </p>
+              <div class="project-meta">Location: {project.location} · 1-Year Guarantee</div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="portfolio-cta">
+    <div class="container" style="text-align: center;">
+      <h2 id="portfolio-cta">Have a similar project or repair list in mind?</h2>
+      <p style="max-width: 660px; margin-inline: auto;">
+        Get a flat-rate price with no hourly surprises. We provide online estimates within a few hours
+        or same-day quotes after an on-site visit.
+      </p>
+      <div class="actions center">
+        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Estimate</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('#portfolio-grid .project-card');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          const show = filter === 'all' || category === filter;
+          (card as HTMLElement).style.display = show ? 'flex' : 'none';
+        });
+      });
+    });
+  </script>
+</Layout>

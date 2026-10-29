@@ -2,70 +2,108 @@
 import Layout from '../layouts/Layout.astro';
 import site from '../data/site.js';
 
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'About Us';
+const fullTitle = 'About NDBC Handyman | Licensed & Insured in Northern VA';
+const description =
+  'Locally owned handyman contractor in Leesburg, VA with 20+ years of experience. Licensed, insured, flat-fee pricing, and a 1-year workmanship guarantee.';
+const breadcrumbs = [
+  { name: 'Home', href: homeUrl },
+  { name: 'About Us', href: `${homeUrl}about/` },
+];
 ---
 
-<Layout title={title}>
-  <section class="section">
+<Layout title={title} fullTitle={fullTitle} description={description} breadcrumbs={breadcrumbs}>
+  <section class="page-hero">
     <div class="container">
-      <h1>{title}</h1>
-
+      <span class="hero-badge">Locally Owned in Leesburg, VA · Over 20 Years Experience</span>
+      <h1>About {site.name}</h1>
       <p class="lead">
-        {site.name} is a local handyman business serving Northern Virginia, not a franchise.
-        We are just one call away for home repairs, remodeling ideas, installations,
-        odd jobs and preventative maintenance.
+        {site.name} is a local handyman and remodeling business serving Northern Virginia—never an
+        impersonal franchise. We are one call away for home repairs, renovations, installations,
+        and preventative property maintenance.
       </p>
+    </div>
+  </section>
 
-      <h2>Why {site.shortName}?</h2>
+  <section class="section" aria-labelledby="story-heading">
+    <div class="container">
       <div class="grid grid-2">
+        <div>
+          <span class="section-eyebrow">Local Northern Virginia Expertise</span>
+          <h2 id="story-heading">Over 20 years fixing and improving Virginia homes</h2>
+          <p>
+            Over twenty years working with home improvement and top property management companies
+            has given us the practical edge needed to deliver lasting repairs and renovations.
+            Property managers hire experienced contractors because experience saves time and money
+            for both parties—we get it done right the first time.
+          </p>
+          <p>
+            Because we are a local business based in Leesburg, VA working year-round, we know
+            Northern Virginia’s housing stock firsthand—from historic Loudoun woodwork and colonial
+            trim to modern suburban decks, tile showers, and finished basements.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Credentials &amp; Homeowner Protections</h3>
+          <ul class="check-list">
+            <li>
+              <strong>Virginia DPOR Licensed:</strong> Certified for general building maintenance,
+              remodeling contractor, handyman, and home repair work in compliance with the Virginia
+              Uniform Statewide Building Code (USBC).
+            </li>
+            <li>
+              <strong>General Liability Insurance:</strong> Full business and general liability
+              coverage protects your property while our crew is on duty.
+            </li>
+            <li>
+              <strong>Upfront Flat-Rate Pricing:</strong> We never charge by the hour—you receive a
+              fixed, competitive price before work begins.
+            </li>
+            <li>
+              <strong>1-Year Workmanship Guarantee:</strong> Written one-year warranty on maintenance
+              and remodeling services.
+            </li>
+            <li>
+              <strong>24/7 Emergency Response:</strong> Rapid dispatch for urgent electrical and
+              plumbing emergencies at <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="why-grid-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">The {site.shortName} Standard</span>
+        <h2 id="why-grid-heading">Six commitments on every job</h2>
+      </div>
+      <div class="grid grid-3">
         {site.benefits.map(benefit => (
           <div class="card">
             <h3>{benefit.title}</h3>
-            <p>{benefit.text}</p>
+            <p style="margin: 0;">{benefit.text}</p>
           </div>
         ))}
       </div>
+    </div>
+  </section>
 
-      <h2>About us</h2>
+  <section class="section" aria-labelledby="coverage-heading">
+    <div class="container">
+      <h2 id="coverage-heading">Northern Virginia service area</h2>
       <p>
-        Over twenty years working with home improvement companies has given us the
-        edge we need to offer you the best in home repair and maintenance services.
-        Top property management companies usually only hire experienced staff because
-        they know experience saves time and money for both parties. We get it done
-        right the first time.
+        We proudly serve homeowners and property managers across Northern Virginia, including{' '}
+        <strong>{site.serviceAreas.join(', ')}</strong>.
       </p>
-      <p>
-        We are not a handyman franchise. {site.shortName} is a local business in
-        Leesburg, VA working for you year round. We support our community just like
-        you do. Therefore, we know Northern Virginia homes better — what they need and
-        how to efficiently fix or improve them.
-      </p>
-      <p>
-        <strong>Service area:</strong> Northern Virginia including {site.serviceAreas.join(', ')}.
-      </p>
-
-      <h2>Licenses and insurance</h2>
-      <p>
-        {site.shortName} is a licensed business. We hold the license that certifies us
-        to perform general building maintenance, remodeling contractor, handyman and
-        home repair contractor work. We also carry business insurance and general
-        liability to cover any accidental damage on your property when we are on duty.
-      </p>
-
-      <h2>Pricing and guarantee</h2>
-      <p>
-        We do not charge per hour. We provide a competitive and affordable flat-fee
-        price for the service you require, backed by a one-year guarantee on
-        maintenance or remodeling services. Guarantee terms may vary for special
-        services or chosen materials — please call for details.
-      </p>
-
-      <h2>Home emergency services</h2>
-      <p>
-        Have you found yourself in an electrical or plumbing emergency? {site.shortName}
-        can help. At any time, call <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
-        and we will be there ASAP.
-      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href={`${homeUrl}portfolio/`}>See Our Project Portfolio</a>
+        <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Estimate</a>
+      </div>
     </div>
   </section>
 </Layout>

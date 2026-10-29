@@ -1,0 +1,208 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import site from '../../data/site.js';
+
+const base = import.meta.env.BASE_URL;
+const homeUrl = base.endsWith('/') ? base : `${base}/`;
+const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
+
+const title = 'Wooden Deck Restoration';
+const fullTitle = 'Wood Deck Restoration & Staining in Leesburg, VA | NDBC';
+const description =
+  'Professional wood deck restoration, board replacement, power washing, and staining in Leesburg and Northern Virginia. Request a free flat-rate estimate.';
+
+const breadcrumbs = [
+  { name: 'Home', href: homeUrl },
+  { name: 'Services', href: `${homeUrl}services/` },
+  { name: 'Wooden Deck Restoration', href: `${homeUrl}services/deck-restoration/` },
+];
+
+const serviceSchema = {
+  '@type': 'Service',
+  '@id': `${new URL(`${homeUrl}services/deck-restoration/`, siteOrigin).toString()}#service`,
+  name: 'Wooden Deck Restoration, Repair & Staining',
+  serviceType: 'Deck Restoration and Carpentry',
+  provider: {
+    '@id': `${new URL(homeUrl, siteOrigin).toString()}#business`,
+  },
+  areaServed: {
+    '@type': 'AdministrativeArea',
+    name: 'Northern Virginia',
+  },
+  description:
+    'Complete wooden deck inspection against Virginia Uniform Statewide Building Code (USBC), rotted board and sub-floor replacement, sanding, power washing, sealing, and staining backed by a 1-year guarantee.',
+  offers: {
+    '@type': 'Offer',
+    priceSpecification: {
+      '@type': 'UnitPriceSpecification',
+      priceCurrency: 'USD',
+      description: 'Flat-rate project quote following free on-site structural inspection',
+    },
+  },
+};
+---
+
+<Layout
+  title={title}
+  fullTitle={fullTitle}
+  description={description}
+  ogImage={`${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`}
+  breadcrumbs={breadcrumbs}
+  pageSchema={serviceSchema}
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Virginia USBC Code-Compliant · 1-Year Guarantee</span>
+      <h1>Wooden Deck Restoration in Leesburg &amp; Northern Virginia</h1>
+      <p class="lead">
+        Is your wooden deck squeaking, showing cracks, splinters, or faded stain? We replace hidden
+        rotted boards and sub-framing before power washing, sanding, sealing, and staining—so your
+        deck stays safe and looks like new for years.
+      </p>
+      <div class="actions">
+        <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Deck Assessment</a>
+        <a class="btn btn-outline-light" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="why-restore-heading">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center;">
+        <div>
+          <span class="section-eyebrow">Structural First, Cosmetic Second</span>
+          <h2 id="why-restore-heading">Why washing and staining alone fails on older decks</h2>
+          <p>
+            One of the biggest threats to Northern Virginia wooden decks is moisture rot from winter
+            rain and snow. Once wood rot starts, it spreads through deck boards, joists, sub-flooring,
+            and even into the house ledger board and siding.
+          </p>
+          <p>
+            Many homeowners hire a surface-only wash-and-stain service, only to face peeling stain,
+            soft spots, and squeaks again the very next year. Walking on rotted decking is like walking
+            on thin ice—it puts both your family’s safety and your property value at risk.
+          </p>
+          <p>
+            <strong>{site.name}</strong> has over 20 years of experience, is licensed under the
+            <strong>Virginia Department of Professional and Occupational Regulation (DPOR)</strong>,
+            and evaluates your deck structure against the current
+            <strong>Virginia Uniform Statewide Building Code (USBC)</strong>.
+          </p>
+        </div>
+
+        <figure class="project-card" style="margin: 0;">
+          <div class="project-media">
+            <span class="project-badge">Before &amp; After · Leesburg, VA</span>
+            <img
+              src={`${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`}
+              alt="Weathered wood deck before and after rotted board replacement, power washing, and protective staining in Leesburg, VA"
+              width="800"
+              height="600"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+          <figcaption class="project-body">
+            <h3>Full Deck Restoration, Sanding &amp; Weatherproof Staining</h3>
+            <p style="margin: 0; color: var(--color-text-light);">
+              Rotten timber replaced, fasteners tightened, pressure washed, sanded smooth, and sealed
+              with multi-year exterior timber protection.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="process-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">All-In-One Turnkey Service</span>
+        <h2 id="process-heading">Our 6-step wooden deck restoration process</h2>
+        <p>
+          Every deck restoration includes structural timber repair and modern weatherproof finishing—all
+          under one flat-rate price backed by our <strong>1-year workmanship guarantee</strong>.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="step-card">
+          <span class="step-number">1</span>
+          <h3>USBC Structural Inspection</h3>
+          <p>We check posts, joists, ledger boards, stairs, railings, and balusters against Virginia building code to locate hidden rot or loose framing.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">2</span>
+          <h3>Rotted Wood &amp; Sub-Floor Replacement</h3>
+          <p>Damaged, split, or decaying boards, stair treads, and sub-framing are removed and replaced with matching pressure-treated timber.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">3</span>
+          <h3>Fastener &amp; Squeak Remediation</h3>
+          <p>Popped nails and loose boards are re-secured with exterior deck screws so the surface feels solid underfoot.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">4</span>
+          <h3>Deep Power Washing</h3>
+          <p>Controlled pressure washing removes mildew, algae, oxidized gray wood fibers, and failing old coatings without gouging the grain.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">5</span>
+          <h3>Sanding &amp; Splinter Removal</h3>
+          <p>Handrails, steps, and high-traffic deck boards are sanded smooth for bare-foot comfort and optimal stain penetration.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">6</span>
+          <h3>Commercial-Grade Sealing &amp; Staining</h3>
+          <p>Applied under proper moisture and temperature conditions so the protective seal and color hold up across Virginia winters and summers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="compare-heading">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center;">
+        <figure class="project-card" style="margin: 0;">
+          <div class="project-media">
+            <span class="project-badge">Structural &amp; Finish Inspection</span>
+            <img
+              src={`${homeUrl}images/deck-restore-leesburg-va.jpg`}
+              alt="Restored wooden deck railing and stained floorboards in Leesburg, Virginia"
+              width="800"
+              height="600"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="project-body">
+            <h3>Stop Paying for Annual Patch Jobs</h3>
+            <p style="margin: 0; color: var(--color-text-light);">
+              Proper preparation and code-compliant carpentry save thousands compared to premature full deck teardown.
+            </p>
+          </figcaption>
+        </figure>
+
+        <div>
+          <span class="section-eyebrow">Smart Homeowner Investment</span>
+          <h2 id="compare-heading">Deck restoration vs. full deck replacement</h2>
+          <p>
+            Full deck replacement is a great option when the primary support structure has failed,
+            but it can be expensive when you are working within a budget. If your framing is sound,
+            targeted structural board replacement combined with professional restoration gives you
+            a safe, like-new outdoor space at a fraction of rebuild cost.
+          </p>
+          <ul class="check-list">
+            <li><strong>Flat-Rate Written Estimate:</strong> Fixed price before work begins—never billed by the hour.</li>
+            <li><strong>DPOR Licensed &amp; Insured:</strong> General liability and contractor licensing for complete peace of mind.</li>
+            <li><strong>1-Year Guarantee:</strong> Written one-year workmanship warranty on all restoration work.</li>
+            <li><strong>Same-Day On-Site Quotes:</strong> Available across Leesburg, Ashburn, Sterling, Reston, Herndon, McLean, and all of Northern VA.</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+            <a class="btn btn-secondary" href={`${homeUrl}contact/`}>Schedule On-Site Inspection</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

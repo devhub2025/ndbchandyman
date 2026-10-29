@@ -4,70 +4,277 @@ import site from '../data/site.js';
 
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
+const fullTitle = `Handyman Services in ${site.nap.addressLocality}, ${site.nap.addressRegion} | ${site.name}`;
+const description =
+  'Licensed & insured handyman in Leesburg and Northern Virginia. Flat-rate pricing, 20+ years experience, 1-year guarantee, and 24/7 emergency repairs.';
+
+const featuredProjects = [
+  {
+    title: 'Wooden Deck Restoration & Staining',
+    badge: 'Before & After · Leesburg, VA',
+    image: `${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`,
+    alt: 'Before and after wooden deck restoration, rotted board replacement, and staining in Leesburg, VA',
+    summary: 'USBC code inspection, rotted timber replacement, power washing, sanding, and multi-year exterior stain.',
+    href: `${homeUrl}services/deck-restoration/`,
+    cta: 'Explore Deck Restoration →',
+  },
+  {
+    title: 'Custom Walk-In Tiled Shower Remodel',
+    badge: 'Bathroom Remodel · Northern VA',
+    image: `${homeUrl}images/portfolio/walk-in-tiled-shower.jpg`,
+    alt: 'Custom walk-in tiled shower with recessed shelf and glass enclosure in Northern Virginia',
+    summary: 'Tub-to-shower conversion with 24-hour flood-tested waterproof pan liner and floor-to-ceiling ceramic tile.',
+    href: `${homeUrl}portfolio/`,
+    cta: 'View Bathroom Projects →',
+  },
+  {
+    title: 'Patio Pavers & Front Entry Walkways',
+    badge: 'Before & After · Loudoun County',
+    image: `${homeUrl}images/portfolio/patio-pavers-before-after.jpg`,
+    alt: 'Before and after brick paver patio leveling and restoration in Northern Virginia',
+    summary: 'Paver re-leveling, stone tile entry steps, pressure washing, and polymeric joint stabilization.',
+    href: `${homeUrl}portfolio/`,
+    cta: 'See Full Portfolio →',
+  },
+];
+
+const loudounAreas = ['Leesburg', 'Ashburn', 'Sterling', 'Middleburg'];
+const fairfaxPwcAreas = [
+  'Reston',
+  'Herndon',
+  'McLean',
+  'Great Falls',
+  'Vienna',
+  'Fairfax',
+  'Fairfax Station',
+  'Centreville',
+  'Chantilly',
+  'Clifton',
+  'Falls Church',
+  'Annandale',
+  'Burke',
+  'Springfield',
+  'Arlington',
+  'Alexandria',
+  'Gainesville',
+  'Haymarket',
+  'Manassas',
+];
 ---
 
-<Layout>
+<Layout fullTitle={fullTitle} description={description}>
   <section class="hero">
     <div class="container">
-      <h1>{site.headline}</h1>
-      <p class="lead">{site.description}</p>
-      <div class="actions">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
-        <a class="btn btn-secondary" href={`${homeUrl}contact/`}>Get a Free Estimate</a>
+      <div class="hero-grid">
+        <div>
+          <span class="hero-badge">Leesburg’s Local Contractor — Not a Franchise</span>
+          <h1>{site.headline}</h1>
+          <p class="lead">{site.description}</p>
+          <div class="actions">
+            <a class="btn btn-accent" href={`${homeUrl}contact/`}>Get a Free Flat-Rate Estimate</a>
+            <a class="btn btn-outline-light" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+          </div>
+          <ul class="hero-checks">
+            <li>Virginia DPOR Licensed &amp; Insured</li>
+            <li>Flat-Rate Price (Never Hourly)</li>
+            <li>1-Year Workmanship Guarantee</li>
+            <li>Same-Day On-Site Quotes</li>
+          </ul>
+        </div>
+
+        <aside class="hero-card" aria-label="Featured deck restoration transformation">
+          <img
+            src={`${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`}
+            alt="Before and after wooden deck restoration and staining by NDBC Handyman in Leesburg, VA"
+            width="800"
+            height="600"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="hero-card-body">
+            <span class="hero-card-tag">Featured Specialty · Leesburg, VA</span>
+            <h2 style="font-size: 1.25rem; margin: 0.2rem 0 0.45rem;">Wooden Deck Restoration &amp; Rot Repair</h2>
+            <p style="margin: 0 0 0.85rem; color: var(--color-text-light); font-size: 0.94rem;">
+              We inspect deck framing against Virginia USBC code, replace rotted boards, power wash, sand, and stain—backed by our 1-year guarantee.
+            </p>
+            <a href={`${homeUrl}services/deck-restoration/`} style="font-weight: 700;">
+              See our 6-step deck restoration process →
+            </a>
+          </div>
+        </aside>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="benefits-heading">
     <div class="container">
-      <h2 id="benefits-heading">Why choose {site.shortName}?</h2>
+      <div class="section-header">
+        <span class="section-eyebrow">Licensed · Experienced · Guaranteed</span>
+        <h2 id="benefits-heading">Why Northern Virginia homeowners choose {site.shortName}</h2>
+        <p>
+          With over 20 years of residential maintenance and remodeling experience, we deliver fixed
+          upfront pricing and code-compliant workmanship the first time.
+        </p>
+      </div>
       <div class="grid grid-3">
         {site.benefits.map(benefit => (
           <div class="card">
             <h3>{benefit.title}</h3>
-            <p>{benefit.text}</p>
+            <p style="margin: 0;">{benefit.text}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="section alt" aria-labelledby="services-heading">
+  <section class="section alt" aria-labelledby="showcase-heading">
     <div class="container">
-      <h2 id="services-heading">Handyman services we offer</h2>
-      <p>From small repairs to full remodels, {site.shortName} handles a wide range of home improvement and maintenance services.</p>
+      <div class="section-header">
+        <span class="section-eyebrow">Proven Local Results</span>
+        <h2 id="showcase-heading">Real before &amp; after projects across Northern Virginia</h2>
+        <p>
+          Explore actual repairs and renovations completed by our team in Leesburg, Loudoun County,
+          and Fairfax County.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        {featuredProjects.map(project => (
+          <article class="project-card">
+            <div class="project-media">
+              <span class="project-badge">{project.badge}</span>
+              <img
+                src={project.image}
+                alt={project.alt}
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="project-body">
+              <h3>{project.title}</h3>
+              <p style="margin: 0 0 0.85rem; color: var(--color-text-light); font-size: 0.95rem;">
+                {project.summary}
+              </p>
+              <a href={project.href} class="project-meta" style="text-decoration: none;">
+                {project.cta}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">13 Specialized Trade Categories</span>
+        <h2 id="services-heading">Handyman &amp; remodeling services we offer</h2>
+        <p>
+          From urgent plumbing and electrical repairs to full kitchen, bathroom, basement, and deck
+          renovations, {site.shortName} handles your entire to-do list under one roof.
+        </p>
+      </div>
       <div class="grid grid-3">
         {site.services.slice(0, 6).map(service => (
           <div class="card">
             <h3>{service.category}</h3>
-            <ul class="list-unstyled">
-              {service.items.slice(0, 4).map(item => <li>{item}</li>)}
-              {service.items.length > 4 && <li>and more…</li>}
+            <ul class="check-list">
+              {service.items.slice(0, 5).map(item => <li>{item}</li>)}
+              {service.items.length > 5 && <li><em>+ {service.items.length - 5} more services</em></li>}
             </ul>
           </div>
         ))}
       </div>
-      <div class="actions">
-        <a class="btn btn-secondary" href={`${homeUrl}services/`}>See all services</a>
+      <div class="actions center">
+        <a class="btn btn-primary" href={`${homeUrl}services/`}>Browse All 13 Service Categories</a>
+        <a class="btn btn-secondary" href={`${homeUrl}services/deck-restoration/`}>Wooden Deck Restoration</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="process-heading">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-eyebrow">No Hourly Surprises</span>
+        <h2 id="process-heading">How our flat-rate estimate process works</h2>
+        <p>
+          Whether you need a quick repair or a multi-room renovation, getting started is simple and
+          transparent.
+        </p>
+      </div>
+      <div class="grid grid-4">
+        <div class="step-card">
+          <span class="step-number">1</span>
+          <h3>Tell Us Your Project</h3>
+          <p style="margin: 0;">Submit our online estimate request or call {site.contact.phoneDisplay} with your repair list or remodel idea.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">2</span>
+          <h3>Fast Flat-Rate Quote</h3>
+          <p style="margin: 0;">Receive an online estimate within a few hours, or schedule an on-site visit for a same-day written flat-fee quote.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">3</span>
+          <h3>Licensed Craftsmanship</h3>
+          <p style="margin: 0;">Our Virginia DPOR-licensed, insured crew completes the work cleanly and to Virginia building code.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-number">4</span>
+          <h3>1-Year Guarantee</h3>
+          <p style="margin: 0;">Pay only the agreed flat rate (cash, check, credit, or debit) backed by our 1-year workmanship warranty.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section" aria-labelledby="areas-heading">
     <div class="container">
-      <h2 id="areas-heading">Service area</h2>
-      <p>{site.name} serves homeowners across Northern Virginia, including:</p>
-      <p>{site.serviceAreas.join(', ')}.</p>
+      <div class="section-header">
+        <span class="section-eyebrow">Local Northern Virginia Coverage</span>
+        <h2 id="areas-heading">Counties &amp; communities we serve</h2>
+        <p>
+          Headquartered in Leesburg, VA, {site.name} serves homeowners and property managers
+          throughout Loudoun County, Fairfax County, Prince William County, and Arlington.
+        </p>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Loudoun County Hub (Primary Base)</h3>
+          <p>
+            Fast dispatch from Leesburg for historic home trim and carpentry, HOA deck restoration,
+            kitchen &amp; bath updates, and 24/7 emergency repairs in:
+          </p>
+          <p style="margin: 0; font-weight: 700; color: var(--color-primary);">
+            {loudounAreas.join(' · ')}
+          </p>
+        </div>
+        <div class="card">
+          <h3>Fairfax, Prince William &amp; Arlington Hub</h3>
+          <p>
+            Full-service remodeling, tile &amp; flooring installation, plumbing, electrical, and
+            preventative property maintenance across:
+          </p>
+          <p style="margin: 0; font-weight: 600;">
+            {fairfaxPwcAreas.join(' · ')}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section alt" aria-labelledby="cta-heading">
+  <section class="section dark" aria-labelledby="cta-heading">
     <div class="container" style="text-align: center;">
-      <h2 id="cta-heading">Ready to get started?</h2>
-      <p>Contact {site.shortName} about your home renovation ideas or to-do list and get a free estimate. No obligation, no hard sell.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
-        <a class="btn btn-secondary" href={`${homeUrl}contact/`}>Request an estimate</a>
+      <h2 id="cta-heading">Ready to cross off your home repair or remodeling list?</h2>
+      <p style="max-width: 660px; margin-inline: auto; color: #d9e6dc;">
+        Contact {site.shortName} today for a free, no-obligation flat-rate estimate—or call anytime
+        for 24/7 emergency plumbing and electrical assistance.
+      </p>
+      <div class="actions center">
+        <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Estimate</a>
+        <a class="btn btn-outline-light" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
       </div>
     </div>
   </section>
