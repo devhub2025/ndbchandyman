@@ -50,9 +50,10 @@ const socialImageUrl = new URL(
   siteOrigin
 ).toString();
 
-// Preview vs. Production Indexing Gate: prevent github.io preview from competing with production domain
+// Preview vs. Production Indexing Gate: prevent github.io / pages.dev preview from competing with production domain
 const isPreviewHost =
-  siteOrigin.includes('github.io') && import.meta.env.PUBLIC_INDEXABLE !== 'true';
+  (siteOrigin.includes('github.io') || siteOrigin.includes('pages.dev')) &&
+  import.meta.env.PUBLIC_INDEXABLE !== 'true';
 const robotsDirective =
   noindex || isPreviewHost
     ? 'noindex, nofollow'

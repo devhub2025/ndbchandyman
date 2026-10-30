@@ -4,7 +4,8 @@ export async function GET({ site }) {
   const homeUrl = base.endsWith('/') ? base : `${base}/`;
   const sitemapUrl = new URL(`${homeUrl}sitemap.xml`, siteOrigin).toString();
   const isPreviewHost =
-    siteOrigin.includes('github.io') && import.meta.env.PUBLIC_INDEXABLE !== 'true';
+    (siteOrigin.includes('github.io') || siteOrigin.includes('pages.dev')) &&
+    import.meta.env.PUBLIC_INDEXABLE !== 'true';
 
   const body = isPreviewHost
     ? [
