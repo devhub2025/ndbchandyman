@@ -5,9 +5,8 @@ import site from '../data/site.js';
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'Contact';
-const fullTitle = 'Request a Free Handyman Estimate in Leesburg, VA | NDBC';
-const description =
-  'Call (703) 869-4805 or request a free, no-obligation flat-rate estimate for home repairs, remodeling, or 24/7 emergency handyman service in Northern VA.';
+const fullTitle = `Request a Free Handyman Estimate in ${site.primaryCityState} | NDBC`;
+const description = `Call (703) 869-4805 or request a free, no-obligation flat-rate estimate for home repairs, remodeling, or 24/7 emergency handyman service in ${site.primaryCityState} and Northern VA.`;
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
   { name: 'Contact', href: `${homeUrl}contact/` },
@@ -21,7 +20,6 @@ const cleanAreas = (site.serviceAreas || []).filter(
 <Layout title={title} fullTitle={fullTitle} description={description} breadcrumbs={breadcrumbs}>
   <section class="page-hero">
     <div class="container">
-      <span class="hero-badge">Online Quotes in Hours · Same-Day On-Site Estimates</span>
       <h1>Get a Free Flat-Rate Estimate</h1>
       <p class="lead">
         Contact {site.name} about your home renovation ideas or repair to-do list. No hourly rate
@@ -32,10 +30,20 @@ const cleanAreas = (site.serviceAreas || []).filter(
 
   <section class="section" aria-labelledby="estimate-form-heading">
     <div class="container">
+      <div class="ai-summary">
+        <p>
+          <strong>How to Book or Request a Quote:</strong> Call or text{' '}
+          <a class="tabular" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>{' '}
+          ({site.hours.regular}, or 24/7 for plumbing and electrical emergencies), email{' '}
+          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>, or submit the form
+          below. Online estimates are typically returned within a few hours, and on-site visits
+          provide a same-day written flat-rate quote.
+        </p>
+      </div>
+
       <div class="grid grid-2" style="align-items: start;">
         <div class="card">
-          <span class="section-eyebrow">Fast Online Quote</span>
-          <h2 id="estimate-form-heading" style="margin-top: 0.25rem;">Request your free estimate</h2>
+          <h2 id="estimate-form-heading" style="margin-top: 0;">Request your free estimate</h2>
           <p style="color: var(--color-text-light); margin-top: 0;">
             Fill out your project details below. Online quotes are typically ready within a few hours,
             or we can schedule a same-day on-site visit.
@@ -59,15 +67,15 @@ const cleanAreas = (site.serviceAreas || []).filter(
                 <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
               </div>
               <div class="form-group">
-                <label for="city">City in Northern VA *</label>
+                <label for="city">City in {site.regionLabel} *</label>
                 <select id="city" name="city" required>
-                  <option value="Leesburg" selected>Leesburg, VA</option>
+                  <option value={site.primaryCity} selected>{site.primaryCityState}</option>
                   {cleanAreas
-                    .filter((a: string) => a !== 'Leesburg')
+                    .filter((a: string) => a !== site.primaryCity)
                     .map((area: string) => (
                       <option value={area}>{area}, VA</option>
                     ))}
-                  <option value="Other Northern VA">Other Northern VA Location</option>
+                  <option value="Other Virginia Location">Other Northern VA Location</option>
                 </select>
               </div>
             </div>
@@ -124,31 +132,36 @@ const cleanAreas = (site.serviceAreas || []).filter(
           <div class="card">
             <h3>Direct Call, Text, or 24/7 Emergency</h3>
             <p style="margin-top: 0;">
-              Prefer to talk directly with a handyman or facing an urgent plumbing or electrical issue?
+              Prefer to talk directly with an experienced handyman or facing an urgent plumbing or
+              electrical issue?
             </p>
             <p>
-              <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>
+              <a class="btn btn-primary tabular" href={`tel:${site.contact.phone}`}>
                 Call {site.contact.phoneDisplay}
               </a>
             </p>
-            <p style="margin-bottom: 0;">
+            <p class="tabular" style="margin-bottom: 0;">
               <strong>Regular Hours:</strong> {site.hours.regular}<br />
               <strong>Emergency Service:</strong> {site.hours.emergency}
             </p>
           </div>
 
           <div class="card">
-            <h3>Email &amp; Office Location</h3>
-            <p style="margin-top: 0;">
+            <h3>Email &amp; Dispatch Location</h3>
+            <p class="tabular" style="margin-top: 0;">
               <strong>{site.name}</strong><br />
-              {site.nap.streetAddress}<br />
+              {site.nap.streetAddress && !site.nap.isServiceAreaBusiness ? (
+                <>
+                  {site.nap.streetAddress}<br />
+                </>
+              ) : null}
               {site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}
             </p>
             <p>
               <strong>Email:</strong>{' '}
               <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
               <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">
-                Open in Google Maps ↗
+                Open in Google Maps
               </a>
             </p>
             <p style="margin-bottom: 0; font-size: 0.92rem; color: var(--color-text-light);">
@@ -160,7 +173,7 @@ const cleanAreas = (site.serviceAreas || []).filter(
             <h3>What to include for the fastest quote</h3>
             <ul class="check-list">
               <li>A brief description of the project or repair to-do list</li>
-              <li>Your town/neighborhood in Northern Virginia</li>
+              <li>Your town or neighborhood in {site.regionLabel}</li>
               <li>Whether you prefer an online quote or an on-site visit</li>
               <li>Any photos of the area (you can attach photos via email or text)</li>
             </ul>
@@ -192,7 +205,7 @@ const cleanAreas = (site.serviceAreas || []).filter(
         );
 
         feedback.style.display = 'block';
-        feedback.innerHTML = `✓ Estimate request prepared for <strong>${name}</strong> (${service} in ${city}). <a href="mailto:${targetEmail}?subject=${subject}&body=${body}">Click here if your email app did not open automatically</a>, or call <a href="tel:+17038694805">(703) 869-4805</a>.`;
+        feedback.innerHTML = `Estimate request prepared for <strong>${name}</strong> (${service} in ${city}). <a href="mailto:${targetEmail}?subject=${subject}&body=${body}">Click here if your email app did not open automatically</a>, or call <a href="tel:+17038694805">(703) 869-4805</a>.`;
         window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
       });
     }

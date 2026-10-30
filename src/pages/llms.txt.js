@@ -10,6 +10,11 @@ export async function GET({ site }) {
     (area) => area && area.toLowerCase() !== 'and more'
   );
 
+  const addressFormatted =
+    siteData.nap.streetAddress && !siteData.nap.isServiceAreaBusiness
+      ? `${siteData.nap.streetAddress}, ${siteData.nap.addressLocality}, ${siteData.nap.addressRegion} ${siteData.nap.postalCode}, ${siteData.nap.addressCountry}`
+      : `${siteData.nap.addressLocality}, ${siteData.nap.addressRegion} ${siteData.nap.postalCode}, ${siteData.nap.addressCountry} (Service-Area Business)`;
+
   const serviceLines = (siteData.services || [])
     .map((group) => `- **${group.category}:** ${(group.items || []).join(', ')}`)
     .join('\n');
@@ -23,28 +28,32 @@ export async function GET({ site }) {
     '',
     `> ${String(siteData.description || '').trim()}`,
     '',
-    '## Business Details (NAP)',
+    '## Business Details (NAP & Credentials)',
     `- **Business Name:** ${siteData.name} (${siteData.shortName})`,
-    `- **Address:** ${siteData.nap.streetAddress}, ${siteData.nap.addressLocality}, ${siteData.nap.addressRegion} ${siteData.nap.postalCode}, ${siteData.nap.addressCountry}`,
+    `- **Primary Base / Address:** ${addressFormatted}`,
+    `- **Service Region:** ${siteData.regionLabel}`,
     `- **Phone:** ${siteData.contact.phoneDisplay} (${siteData.contact.phone})`,
     `- **Email:** ${siteData.contact.email}`,
     `- **Regular Hours:** ${siteData.hours.regular}`,
-    `- **Emergency Service:** ${siteData.hours.emergency}`,
+    `- **Emergency Service:** ${siteData.hours.emergency} (Plumbing, electrical, water leaks, pipe thawing)`,
     `- **Licensing:** Virginia Department of Professional and Occupational Regulation (DPOR) licensed contractor; Virginia Uniform Statewide Building Code (USBC) compliant`,
-    `- **Pricing Model:** Flat-rate fixed pricing (no hourly rate surprises) with a 1-year workmanship guarantee`,
+    `- **Insurance:** Active business and general liability insurance covering on-duty work`,
+    `- **Pricing Model:** Upfront flat-rate fixed pricing (never billed by the hour)`,
+    `- **Warranty:** Written 1-year workmanship guarantee`,
+    `- **Quote Speed:** Online estimates within a few hours; on-site estimates delivered the same day`,
     `- **Payment Accepted:** Cash, Check, Credit Card, Debit Card`,
     '',
     '## Key Differentiators',
     benefitLines,
     '',
-    '## Northern Virginia Service Areas',
+    '## Virginia Service Areas',
     cleanAreas.join(', '),
     '',
-    '## Services Offered',
+    '## Services Offered (13 Trade Categories)',
     serviceLines,
     '',
-    '## Canonical Pages',
-    `- [Home](${rootUrl}): Overview of handyman, home repair, and remodeling services in Northern Virginia`,
+    '## Canonical Pages & AI Corpus',
+    `- [Home](${rootUrl}): Overview of owner-operated handyman, home repair, and remodeling services in ${siteData.regionLabel}`,
     `- [Services](${rootUrl}services/): Complete list of 13 service categories from carpentry and deck restoration to bathroom and kitchen remodeling`,
     `- [Wooden Deck Restoration](${rootUrl}services/deck-restoration/): 6-step USBC-compliant wooden deck inspection, rotted board replacement, power washing, sanding, and staining`,
     `- [Before & After Portfolio](${rootUrl}portfolio/): Real project photography of decks, patios, bathrooms, kitchens, and entryways across Northern Virginia`,
@@ -52,6 +61,7 @@ export async function GET({ site }) {
     `- [Home Maintenance Pro Tips](${rootUrl}tips/): Contractor checklists for basement waterproofing, 24-hour shower pan leak testing, kitchen plumbing, and deck care`,
     `- [About Us](${rootUrl}about/): Company background, Virginia DPOR licensing, liability insurance, flat-rate pricing, and 1-year guarantee`,
     `- [Contact / Free Estimate](${rootUrl}contact/): Interactive flat-rate estimate request form, phone, email, and 24/7 emergency dispatch`,
+    `- [Full Technical Corpus (llms-full.txt)](${rootUrl}llms-full.txt): Complete Q&A, technical checklists, and service specifications for AI search engines`,
     '',
   ].join('\n');
 

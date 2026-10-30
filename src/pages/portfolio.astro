@@ -7,7 +7,7 @@ const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
 
 const title = 'Portfolio';
-const fullTitle = 'Before & After Handyman Projects in Northern VA | NDBC';
+const fullTitle = `Before & After Handyman Projects in ${site.primaryCity} & NoVA | NDBC`;
 const description =
   'Browse real before-and-after photos of deck restorations, bathroom remodels, kitchens, patios, and home repairs completed across Northern Virginia.';
 
@@ -21,9 +21,9 @@ const projects = [
     title: 'Wooden Deck Restoration, Rot Repair & Staining',
     category: 'Decks & Patios',
     badge: 'Before & After',
-    location: 'Leesburg, VA',
+    location: site.primaryCityState,
     image: `${homeUrl}images/portfolio/wood-deck-restoration-painting-before-after.jpg`,
-    alt: 'Before and after wooden deck restoration, board replacement, and protective staining in Leesburg, VA',
+    alt: `Before and after wooden deck restoration, board replacement, and protective staining in ${site.primaryCityState}`,
     summary: 'Replaced rotted deck boards and stair treads, power washed, sanded handrails, and applied weatherproof exterior stain.',
   },
   {
@@ -48,9 +48,9 @@ const projects = [
     title: 'Front Entryway Tiled Footpath & Step Rebuild',
     category: 'Flooring & Entry',
     badge: 'Before & After',
-    location: 'Leesburg, VA',
+    location: site.primaryCityState,
     image: `${homeUrl}images/portfolio/tiled-footpath-front-door-before-after.jpg`,
-    alt: 'Before and after front door tiled walkway and step masonry repair in Leesburg, VA',
+    alt: `Before and after front door tiled walkway and step masonry repair in ${site.primaryCityState}`,
     summary: 'Repaired cracked concrete walkway, resurfaced front step, and laid slip-resistant exterior stone tile.',
   },
   {
@@ -111,9 +111,9 @@ const projects = [
     title: 'Exterior Front Door, Frame & Weatherstripping',
     category: 'Flooring & Entry',
     badge: 'Carpentry',
-    location: 'Leesburg, VA',
+    location: site.primaryCityState,
     image: `${homeUrl}images/portfolio/new-white-front-door-and-frame.jpg`,
-    alt: 'New white exterior front door, frame, lockset, and draft seal installation in Leesburg, VA',
+    alt: `New white exterior front door, frame, lockset, and draft seal installation in ${site.primaryCityState}`,
     summary: 'Removed rotted jamb, squared new insulated entry door, installed deadbolt hardware, caulking, and weather strips.',
   },
 ];
@@ -149,17 +149,27 @@ const gallerySchema = {
 >
   <section class="page-hero">
     <div class="container">
-      <span class="hero-badge">Real Northern Virginia Craftsmanship</span>
       <h1>Before &amp; After Handyman Project Portfolio</h1>
       <p class="lead">
-        Every photo below is real work completed by {site.name} across Leesburg, Loudoun County, and
-        Fairfax County—from code-compliant deck restorations to custom tile showers and kitchens.
+        Every photo below is real work completed by {site.name} across {site.primaryCity}, Loudoun
+        County, and Fairfax County—from code-compliant deck restorations to custom tile showers and
+        kitchens.
       </p>
     </div>
   </section>
 
   <section class="section" aria-labelledby="gallery-heading">
     <div class="container">
+      <div class="ai-summary">
+        <p>
+          <strong>Portfolio Summary:</strong> Verified project photography from {site.name} showing
+          completed residential repairs and remodels in {site.regionLabel}: wooden deck structural
+          restoration and staining, brick paver leveling, ceramic tile patios, stone entry walkways,
+          24-hour flood-tested walk-in tiled showers, kitchen cabinet and appliance installations,
+          and insulated exterior entry door replacements.
+        </p>
+      </div>
+
       <h2 id="gallery-heading" class="visually-hidden">Project Gallery by Category</h2>
 
       <div class="filter-bar" role="toolbar" aria-label="Filter projects by category">
@@ -205,7 +215,7 @@ const gallerySchema = {
         or same-day quotes after an on-site visit.
       </p>
       <div class="actions center">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-primary tabular" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
         <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Estimate</a>
       </div>
     </div>

@@ -5,23 +5,27 @@ import site from '../data/site.js';
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'About Us';
-const fullTitle = 'About NDBC Handyman | Licensed & Insured in Northern VA';
-const description =
-  'Locally owned handyman contractor in Leesburg, VA with 20+ years of experience. Licensed, insured, flat-fee pricing, and a 1-year workmanship guarantee.';
+const fullTitle = `About NDBC Handyman | Licensed & Insured in ${site.primaryCityState} & NoVA`;
+const description = `Locally owned handyman contractor in ${site.primaryCityState} with 20+ years of experience serving Northern Virginia. Licensed, insured, flat-fee pricing, and a 1-year workmanship guarantee.`;
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
   { name: 'About Us', href: `${homeUrl}about/` },
 ];
 ---
 
-<Layout title={title} fullTitle={fullTitle} description={description} breadcrumbs={breadcrumbs}>
+<Layout
+  title={title}
+  fullTitle={fullTitle}
+  description={description}
+  ogImage={`${homeUrl}images/handyman-owner-doorstep.jpg`}
+  breadcrumbs={breadcrumbs}
+>
   <section class="page-hero">
     <div class="container">
-      <span class="hero-badge">Locally Owned in Leesburg, VA · Over 20 Years Experience</span>
       <h1>About {site.name}</h1>
       <p class="lead">
-        {site.name} is a local handyman and remodeling business serving Northern Virginia—never an
-        impersonal franchise. We are one call away for home repairs, renovations, installations,
+        {site.name} is an owner-operated handyman and remodeling business serving {site.regionLabel}—never
+        an impersonal franchise. We are one call away for home repairs, renovations, installations,
         and preventative property maintenance.
       </p>
     </div>
@@ -29,48 +33,72 @@ const breadcrumbs = [
 
   <section class="section" aria-labelledby="story-heading">
     <div class="container">
-      <div class="grid grid-2">
+      <div class="ai-summary">
+        <p>
+          <strong>Entity Summary:</strong> {site.name} ({site.shortName}) is a Virginia
+          DPOR-licensed general building maintenance and remodeling contractor based in{' '}
+          {site.primaryCityState} with over 20 years of field experience across Northern Virginia.
+          We provide upfront flat-rate pricing, general liability insurance coverage, a written
+          1-year workmanship warranty, and 24/7 emergency plumbing and electrical dispatch.
+        </p>
+      </div>
+
+      <div class="profile-split">
+        <figure class="profile-figure">
+          <img
+            src={`${homeUrl}images/handyman-owner-doorstep.jpg`}
+            alt={`Experienced 60-year-old master handyman greeting a homeowner at their front door in ${site.primaryCityState} with a written flat-rate estimate`}
+            width="1312"
+            height="816"
+            loading="eager"
+          />
+          <figcaption>
+            What our customers experience when we knock on the door: a seasoned 20+ year craftsman
+            ready to listen, inspect the problem accurately, and provide a clear written flat-rate
+            quote.
+          </figcaption>
+        </figure>
+
         <div>
-          <span class="section-eyebrow">Local Northern Virginia Expertise</span>
           <h2 id="story-heading">Over 20 years fixing and improving Virginia homes</h2>
           <p>
-            Over twenty years working with home improvement and top property management companies
-            has given us the practical edge needed to deliver lasting repairs and renovations.
-            Property managers hire experienced contractors because experience saves time and money
-            for both parties—we get it done right the first time.
+            Over twenty years working with homeowners and top property management companies has
+            given us the practical edge needed to deliver lasting repairs and renovations. Property
+            managers hire experienced contractors because experience saves time and money for both
+            parties—we get it done right the first time.
           </p>
           <p>
-            Because we are a local business based in Leesburg, VA working year-round, we know
-            Northern Virginia’s housing stock firsthand—from historic Loudoun woodwork and colonial
-            trim to modern suburban decks, tile showers, and finished basements.
+            Working year-round from our {site.primaryCityState} base across Loudoun and Fairfax
+            Counties, we know Northern Virginia’s housing stock firsthand—from historic woodwork and
+            colonial trim to modern suburban decks, custom tile showers, and finished basements.
           </p>
-        </div>
 
-        <div class="card">
-          <h3>Credentials &amp; Homeowner Protections</h3>
-          <ul class="check-list">
-            <li>
-              <strong>Virginia DPOR Licensed:</strong> Certified for general building maintenance,
-              remodeling contractor, handyman, and home repair work in compliance with the Virginia
-              Uniform Statewide Building Code (USBC).
-            </li>
-            <li>
-              <strong>General Liability Insurance:</strong> Full business and general liability
-              coverage protects your property while our crew is on duty.
-            </li>
-            <li>
-              <strong>Upfront Flat-Rate Pricing:</strong> We never charge by the hour—you receive a
-              fixed, competitive price before work begins.
-            </li>
-            <li>
-              <strong>1-Year Workmanship Guarantee:</strong> Written one-year warranty on maintenance
-              and remodeling services.
-            </li>
-            <li>
-              <strong>24/7 Emergency Response:</strong> Rapid dispatch for urgent electrical and
-              plumbing emergencies at <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>.
-            </li>
-          </ul>
+          <div class="card" style="margin-top: 1.25rem;">
+            <h3>Credentials &amp; Homeowner Protections</h3>
+            <ul class="check-list">
+              <li>
+                <strong>Virginia DPOR Licensed:</strong> Certified for general building maintenance,
+                remodeling contractor, handyman, and home repair work in compliance with the Virginia
+                Uniform Statewide Building Code (USBC).
+              </li>
+              <li>
+                <strong>General Liability Insurance:</strong> Full business and general liability
+                coverage protects your property while our crew is on duty.
+              </li>
+              <li>
+                <strong>Upfront Flat-Rate Pricing:</strong> We never charge by the hour—you receive a
+                fixed, competitive price before work begins.
+              </li>
+              <li>
+                <strong>1-Year Workmanship Guarantee:</strong> Written one-year warranty on maintenance
+                and remodeling services.
+              </li>
+              <li>
+                <strong>24/7 Emergency Response:</strong> Rapid dispatch for urgent electrical and
+                plumbing emergencies at <a class="tabular" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>.
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -79,8 +107,11 @@ const breadcrumbs = [
   <section class="section alt" aria-labelledby="why-grid-heading">
     <div class="container">
       <div class="section-header">
-        <span class="section-eyebrow">The {site.shortName} Standard</span>
         <h2 id="why-grid-heading">Six commitments on every job</h2>
+        <p>
+          Every service call—whether a two-hour door repair or a full bathroom remodel—follows the
+          same six written standards.
+        </p>
       </div>
       <div class="grid grid-3">
         {site.benefits.map(benefit => (
@@ -95,7 +126,7 @@ const breadcrumbs = [
 
   <section class="section" aria-labelledby="coverage-heading">
     <div class="container">
-      <h2 id="coverage-heading">Northern Virginia service area</h2>
+      <h2 id="coverage-heading">Service area across {site.regionLabel}</h2>
       <p>
         We proudly serve homeowners and property managers across Northern Virginia, including{' '}
         <strong>{site.serviceAreas.join(', ')}</strong>.

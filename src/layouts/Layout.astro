@@ -42,11 +42,11 @@ const pageTitle = fullTitle
   ? fullTitle
   : title
     ? `${title} | ${site.name}`
-    : `Handyman Services in ${site.nap.addressLocality}, ${site.nap.addressRegion} | ${site.name}`;
+    : `Handyman Services in ${site.primaryCityState} | ${site.name}`;
 
 const metaDescription = (description || site.description || '').trim().replace(/\s+/g, ' ');
 const socialImageUrl = new URL(
-  ogImage || `${homeUrl}images/deck-restore-leesburg-va.jpg`,
+  ogImage || `${homeUrl}images/handyman-owner-doorstep.jpg`,
   siteOrigin
 ).toString();
 
@@ -72,8 +72,9 @@ const nav = [
 
 const currentPath = normalizedPathname;
 
-// Build linked @graph JSON-LD
+// Build linked @graph JSON-LD for Google Search & AI Answer Engines (GEO / AEO)
 const businessId = `${siteRootUrl}#business`;
+const founderId = `${siteRootUrl}#master-handyman`;
 const websiteId = `${siteRootUrl}#website`;
 const webpageId = `${canonicalUrl}#webpage`;
 const breadcrumbId = `${canonicalUrl}#breadcrumb`;
@@ -95,7 +96,19 @@ const offerCatalogItems = (site.services || []).map((group: { category: string; 
   })),
 }));
 
-const businessNode = {
+const postalAddress: Record<string, unknown> = {
+  '@type': 'PostalAddress',
+  addressLocality: site.nap.addressLocality,
+  addressRegion: site.nap.addressRegion,
+  postalCode: String(site.nap.postalCode),
+  addressCountry: site.nap.addressCountry,
+};
+
+if (site.nap.streetAddress && !site.nap.isServiceAreaBusiness) {
+  postalAddress.streetAddress = site.nap.streetAddress;
+}
+
+const businessNode: Record<string, unknown> = {
   '@type': ['HomeAndConstructionBusiness', 'GeneralContractor'],
   '@id': businessId,
   name: site.name,
@@ -106,7 +119,10 @@ const businessNode = {
     '@type': 'ImageObject',
     url: new URL(`${homeUrl}logo.svg`, siteOrigin).toString(),
   },
-  image: socialImageUrl,
+  image: [
+    new URL(`${homeUrl}images/handyman-owner-doorstep.jpg`, siteOrigin).toString(),
+    new URL(`${homeUrl}images/deck-restore-leesburg-va.jpg`, siteOrigin).toString(),
+  ],
   description: String(site.description || '').trim(),
   telephone: site.contact.phone,
   email: site.contact.email,
@@ -114,15 +130,26 @@ const businessNode = {
   currenciesAccepted: 'USD',
   paymentAccepted: 'Cash, Check, Credit Card, Debit Card',
   slogan: 'Flat-rate pricing, licensed Virginia contractor, 1-year workmanship guarantee',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: site.nap.streetAddress,
-    addressLocality: site.nap.addressLocality,
-    addressRegion: site.nap.addressRegion,
-    postalCode: String(site.nap.postalCode),
-    addressCountry: site.nap.addressCountry,
-  },
+  address: postalAddress,
   hasMap: site.nap.mapUrl,
+  founder: { '@id': founderId },
+  knowsAbout: [
+    'Wooden Deck Restoration and Structural Repair',
+    'Virginia Uniform Statewide Building Code (USBC) Compliance',
+    'Bathroom Remodeling and 24-Hour Shower Pan Flood Testing',
+    'Kitchen Remodeling, Cabinetry, and Backsplash Tile',
+    'Finish Carpentry, Drywall, and Rot Replacement',
+    'Residential Plumbing and Electrical Repairs',
+    'Flat-Rate Handyman Pricing',
+  ],
+  hasCredential: {
+    '@type': 'EducationalOccupationalCredential',
+    credentialCategory: ' Virginia Contractor License',
+    recognizedBy: {
+      '@type': 'GovernmentOrganization',
+      name: 'Virginia Department of Professional and Occupational Regulation (DPOR)',
+    },
+  },
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -186,6 +213,29 @@ const businessNode = {
   },
 };
 
+if (site.nap.latitude && site.nap.longitude) {
+  businessNode.geo = {
+    '@type': 'GeoCoordinates',
+    latitude: site.nap.latitude,
+    longitude: site.nap.longitude,
+  };
+}
+
+if (site.nap.bbbUrl) {
+  businessNode.sameAs = [site.nap.bbbUrl];
+}
+
+const founderNode = {
+  '@type': 'Person',
+  '@id': founderId,
+  name: 'Master Handyman & Owner-Operator',
+  jobTitle: 'Licensed Remodeling & Home Repair Contractor',
+  worksFor: { '@id': businessId },
+  image: new URL(`${homeUrl}images/handyman-owner-doorstep.jpg`, siteOrigin).toString(),
+  description:
+    'Experienced Virginia DPOR-licensed handyman and remodeling contractor with over 20 years of residential maintenance, carpentry, deck restoration, and remodeling experience in Northern Virginia.',
+};
+
 const websiteNode = {
   '@type': 'WebSite',
   '@id': websiteId,
@@ -204,9 +254,13 @@ const webpageNode: Record<string, unknown> = {
   inLanguage: 'en-US',
   isPartOf: { '@id': websiteId },
   about: { '@id': businessId },
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.ai-summary', '.faq-answer'],
+  },
 };
 
-const graphNodes: Record<string, unknown>[] = [businessNode, websiteNode, webpageNode];
+const graphNodes: Record<string, unknown>[] = [businessNode, founderNode, websiteNode, webpageNode];
 
 if (breadcrumbs.length > 0) {
   webpageNode.breadcrumb = { '@id': breadcrumbId };
@@ -234,6 +288,23 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': graphNodes,
 };
+
+const fontCss = `
+@font-face {
+  font-family: 'Bitter';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url('${homeUrl}fonts/bitter-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('${homeUrl}fonts/public-sans-latin.woff2') format('woff2');
+}
+`;
 ---
 
 <!doctype html>
@@ -242,12 +313,20 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href={`${homeUrl}logo.svg`} />
+    <link rel="preload" href={`${homeUrl}fonts/bitter-latin.woff2`} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={`${homeUrl}fonts/public-sans-latin.woff2`} as="font" type="font/woff2" crossorigin />
+    <style set:html={fontCss} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" type="application/xml" href={`${homeUrl}sitemap.xml`} />
+    <link rel="alternate" type="text/plain" href={`${homeUrl}llms.txt`} title="AI Search Entity Summary (llms.txt)" />
+    <link rel="alternate" type="text/plain" href={`${homeUrl}llms-full.txt`} title="AI Search Full Technical Corpus (llms-full.txt)" />
     <meta name="robots" content={robotsDirective} />
     <meta name="generator" content={Astro.generator} />
     <meta name="geo.region" content="US-VA" />
-    <meta name="geo.placename" content={`${site.nap.addressLocality}, ${site.nap.addressRegion}`} />
+    <meta name="geo.placename" content={site.primaryCityState} />
+    {site.nap.latitude && site.nap.longitude && (
+      <meta name="geo.position" content={`${site.nap.latitude};${site.nap.longitude}`} />
+    )}
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
 
@@ -274,13 +353,33 @@ const jsonLd = {
     <div class="trust-topbar" role="region" aria-label="Service credentials and emergency contact">
       <div class="container">
         <ul class="trust-pills">
-          <li><span class="trust-dot" aria-hidden="true">●</span> Virginia DPOR Licensed &amp; Insured</li>
-          <li><span class="trust-dot" aria-hidden="true">●</span> Flat-Rate Fixed Pricing</li>
-          <li><span class="trust-dot" aria-hidden="true">●</span> 1-Year Workmanship Guarantee</li>
-          <li><span class="trust-dot" aria-hidden="true">●</span> 20+ Years in Northern VA</li>
+          <li>
+            <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Virginia DPOR Licensed &amp; Insured
+          </li>
+          <li>
+            <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Flat-Rate Fixed Pricing
+          </li>
+          <li>
+            <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            1-Year Workmanship Guarantee
+          </li>
+          <li>
+            <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            20+ Years in {site.regionLabel}
+          </li>
         </ul>
         <div class="topbar-emergency">
-          24/7 Emergency Service: <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
+          24/7 Emergency Dispatch: <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>
         </div>
       </div>
     </div>
@@ -291,11 +390,11 @@ const jsonLd = {
           <img src={`${homeUrl}logo.svg`} alt={`${site.name} logo`} width="46" height="46" />
           <span class="brand-text">
             <span class="brand-name">{site.shortName} Handyman</span>
-            <span class="brand-sub">Leesburg &amp; Northern Virginia</span>
+            <span class="brand-sub">{site.regionLabel}</span>
           </span>
         </a>
         <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">
-          Menu ▾
+          Menu
         </button>
         <nav id="main-nav" class="site-nav" aria-label="Main navigation">
           <ul>
@@ -343,11 +442,20 @@ const jsonLd = {
         <div class="footer-grid">
           <div>
             <strong>{site.name}</strong>
-            <p>{site.nap.streetAddress}<br />{site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}</p>
-            <p>
+            <p class="tabular">
+              {site.nap.streetAddress && !site.nap.isServiceAreaBusiness ? (
+                <>
+                  {site.nap.streetAddress}<br />
+                </>
+              ) : (
+                <>Service-Area Dispatch Base:<br /></>
+              )}
+              {site.nap.addressLocality}, {site.nap.addressRegion} {site.nap.postalCode}
+            </p>
+            <p class="tabular">
               Phone: <a href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a><br />
               Email: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><br />
-              <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">View on Google Maps ↗</a>
+              <a href={site.nap.mapUrl} target="_blank" rel="noopener noreferrer">View on Google Maps</a>
             </p>
           </div>
           <div>
@@ -364,7 +472,7 @@ const jsonLd = {
           </div>
           <div>
             <strong>Hours &amp; Payment</strong>
-            <p>
+            <p class="tabular">
               <strong>Regular:</strong> {site.hours.regular}<br />
               <strong>Emergency:</strong> {site.hours.emergency} (Plumbing, Electrical &amp; Urgent Repairs)
             </p>
@@ -375,19 +483,21 @@ const jsonLd = {
             </p>
           </div>
           <div>
-            <strong>Northern VA Service Area</strong>
-            <p>Serving Loudoun &amp; Fairfax Counties including {site.serviceAreas.slice(0, 12).join(', ')}, and surrounding communities.</p>
+            <strong>{site.regionLabel} Coverage</strong>
+            <p>Serving {site.primaryCounty}, Loudoun &amp; Fairfax Counties including {site.serviceAreas.slice(0, 12).join(', ')}, and surrounding communities.</p>
           </div>
         </div>
         <div class="footer-bottom">
           <span>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</span>
-          <span>Virginia DPOR Licensed Contractor · Insured · <a href={`${homeUrl}sitemap.xml`}>Sitemap</a></span>
+          <span>
+            Virginia DPOR Licensed Contractor · Insured · <a href={`${homeUrl}sitemap.xml`}>Sitemap</a> · <a href={`${homeUrl}llms.txt`}>AI Summary (llms.txt)</a>
+          </span>
         </div>
       </div>
     </footer>
 
     <div class="mobile-sticky-bar" role="region" aria-label="Quick contact actions">
-      <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+      <a class="btn btn-primary tabular" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
       <a class="btn btn-accent" href={`${homeUrl}contact/`}>Free Estimate</a>
     </div>
 

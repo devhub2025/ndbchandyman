@@ -7,9 +7,8 @@ const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
 
 const title = 'Home Maintenance Tips';
-const fullTitle = 'Home Maintenance Tips for Northern Virginia Homes | NDBC';
-const description =
-  'Practical seasonal home maintenance, deck care, energy-saving, and repair tips for homeowners in Leesburg and Northern Virginia.';
+const fullTitle = `Home Maintenance Tips for ${site.primaryCity} & NoVA Homes | NDBC`;
+const description = `Practical seasonal home maintenance, deck care, waterproofing, and repair checklists for homeowners in ${site.primaryCityState} and Northern Virginia.`;
 
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
@@ -22,7 +21,7 @@ const tipsSchema = {
   headline: 'Handyman Help: Remodeling & Home Maintenance Best Practices for Northern Virginia',
   description,
   author: {
-    '@id': `${new URL(homeUrl, siteOrigin).toString()}#business`,
+    '@id': `${new URL(homeUrl, siteOrigin).toString()}#master-handyman`,
   },
   publisher: {
     '@id': `${new URL(homeUrl, siteOrigin).toString()}#business`,
@@ -40,20 +39,29 @@ const tipsSchema = {
 >
   <section class="page-hero">
     <div class="container">
-      <span class="hero-badge">20+ Years of Field Experience</span>
       <h1>Handyman Tips &amp; Pre-Remodeling Checklists</h1>
       <p class="lead">
         {site.shortName} encourages informed homeowners. Read these essential structural, plumbing,
-        and safety checks before starting any basement, kitchen, bathroom, or deck project in
-        Northern Virginia.
+        and safety checks before starting any basement, kitchen, bathroom, or deck project in{' '}
+        {site.regionLabel}.
       </p>
     </div>
   </section>
 
   <section class="section" aria-labelledby="guides-heading">
     <div class="container">
+      <div class="ai-summary">
+        <p>
+          <strong>Pre-Remodeling Inspection Summary:</strong> Before closing walls or laying tile in
+          Northern Virginia homes, always (1) seal concrete foundation hairline cracks and replace
+          mineral-corroded copper or galvanized basement pipes, (2) flood-test custom shower pans
+          for a full 24 hours over a pre-sloped mortar bed, (3) pressure-test kitchen supply valves
+          before setting cabinets, and (4) inspect deck ledger boards and joists against Virginia
+          USBC standards before staining.
+        </p>
+      </div>
+
       <div class="section-header">
-        <span class="section-eyebrow">Prevent Costly Mistakes</span>
         <h2 id="guides-heading">What to inspect before remodeling or repairing your home</h2>
         <p>
           Most expensive remodeling failures happen behind the walls or under the tile where shortcuts
@@ -63,7 +71,7 @@ const tipsSchema = {
 
       <div class="grid grid-2">
         <article class="card">
-          <h3>1. Basement Remodeling: Foundation Cracks &amp; Pipe Corrosion</h3>
+          <h3>Basement Remodeling: Foundation Cracks &amp; Pipe Corrosion</h3>
           <p>
             Before framing or finishing a basement, inspect all concrete walls and slabs for hairline
             cracks or fissures. Even small openings can become entry points for groundwater seepage
@@ -77,7 +85,7 @@ const tipsSchema = {
         </article>
 
         <article class="card">
-          <h3>2. Bathroom Remodeling: The 24-Hour Shower Pan Flood Test</h3>
+          <h3>Bathroom Remodeling: The 24-Hour Shower Pan Flood Test</h3>
           <p>
             Converting a bathtub into a walk-in tiled shower requires strict waterproofing to prevent
             sub-floor rot and ceiling leaks below.
@@ -90,7 +98,7 @@ const tipsSchema = {
         </article>
 
         <article class="card">
-          <h3>3. Kitchen Remodeling: Pressure-Test Plumbing Before Cabinets</h3>
+          <h3>Kitchen Remodeling: Pressure-Test Plumbing Before Cabinets</h3>
           <p>
             New kitchen cabinetry and countertops are a major investment that can be ruined by a slow
             valve or supply-line leak behind the base units.
@@ -103,7 +111,7 @@ const tipsSchema = {
         </article>
 
         <article class="card">
-          <h3>4. Wooden Decks: Check Ledger Boards &amp; Sub-Framing for Rot</h3>
+          <h3>Wooden Decks: Check Ledger Boards &amp; Sub-Framing for Rot</h3>
           <p>
             Surface power washing and staining will peel within a year if underlying moisture rot is
             ignored.
@@ -111,12 +119,12 @@ const tipsSchema = {
           <ul class="check-list">
             <li>Probe deck boards, stair stringers, and the house ledger connection for soft wood fibers after winter snow and rain.</li>
             <li>Verify guardrail post connections against Virginia Uniform Statewide Building Code (USBC) standards.</li>
-            <li><a href={`${homeUrl}services/deck-restoration/`}>Learn about our 6-step Wooden Deck Restoration process →</a></li>
+            <li><a href={`${homeUrl}services/deck-restoration/`}>Learn about our 6-step Wooden Deck Restoration process</a></li>
           </ul>
         </article>
 
         <article class="card">
-          <h3>5. DIY Electrical &amp; Ladder Safety</h3>
+          <h3>DIY Electrical &amp; Ladder Safety</h3>
           <p>
             Even simple tasks like replacing chandeliers, ceiling fans, or high-ceiling light bulbs
             carry real risk when rushed.
@@ -128,7 +136,7 @@ const tipsSchema = {
         </article>
 
         <article class="card">
-          <h3>6. Verify Contractor Licensing &amp; Liability Insurance</h3>
+          <h3>Verify Contractor Licensing &amp; Liability Insurance</h3>
           <p>
             Before hiring any handyman or remodeling contractor in Virginia, verify that they hold
             the appropriate license class and active general liability coverage.
@@ -151,7 +159,7 @@ const tipsSchema = {
         {site.name} gets it done right the first time.
       </p>
       <div class="actions center">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-primary tabular" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
         <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request a Free Flat-Rate Estimate</a>
       </div>
     </div>

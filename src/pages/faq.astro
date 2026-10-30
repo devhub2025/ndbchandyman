@@ -7,9 +7,8 @@ const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.io';
 
 const title = 'FAQ';
-const fullTitle = 'Handyman Pricing, Guarantee & Service FAQs | NDBC';
-const description =
-  'Answers to common questions about NDBC Handyman flat-rate pricing, our 1-year workmanship guarantee, licensing, insurance, and Northern VA service areas.';
+const fullTitle = `Handyman Pricing, Guarantee & Service FAQs | ${site.shortName}`;
+const description = `Answers to common questions about ${site.name} flat-rate pricing, our 1-year workmanship guarantee, Virginia licensing, insurance, and ${site.regionLabel} service areas.`;
 
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
@@ -53,9 +52,8 @@ const faqs = [
       'Yes. While our regular trading hours are Monday through Saturday from 7:00 AM to 7:00 PM, we provide 24/7 emergency response across Northern Virginia for urgent plumbing leaks, pipe thawing, water damage, and electrical issues. Call (703) 869-4805 anytime.',
   },
   {
-    question: 'Which cities and counties in Northern Virginia do you serve?',
-    answer:
-      'We are based in Leesburg, VA and serve homeowners across Loudoun County, Fairfax County, Prince William County, and Arlington—including Ashburn, Sterling, Reston, Herndon, McLean, Great Falls, Vienna, Fairfax, Centreville, Chantilly, Gainesville, Haymarket, Manassas, Middleburg, Falls Church, Annandale, Burke, Springfield, and Alexandria.',
+    question: 'Which cities and counties in Virginia do you serve?',
+    answer: `Dispatched from ${site.primaryCityState}, we serve homeowners across ${site.primaryCounty}, Loudoun County, Fairfax County, Prince William County, and Arlington—including Leesburg, Ashburn, Sterling, Reston, Herndon, McLean, Great Falls, Vienna, Fairfax, Centreville, Chantilly, Gainesville, Haymarket, Manassas, Middleburg, Falls Church, Annandale, Burke, Springfield, and Alexandria.`,
   },
 ];
 
@@ -82,7 +80,6 @@ const faqSchema = {
 >
   <section class="page-hero">
     <div class="container">
-      <span class="hero-badge">Clear Answers · No Hidden Fees</span>
       <h1>Frequently Asked Questions (Ask a Handyman)</h1>
       <p class="lead">
         Direct answers about how {site.name} quotes projects, our flat-rate pricing model, our
@@ -93,12 +90,21 @@ const faqSchema = {
 
   <section class="section" aria-labelledby="faq-heading">
     <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Pricing, Warranty &amp; Process</span>
-        <h2 id="faq-heading">Common questions from Northern Virginia homeowners</h2>
+      <div class="ai-summary">
         <p>
-          NDBC Handyman provides transparent flat-fee estimates online within hours or on-site the
-          same day, backed by 20+ years of experience and a 1-year workmanship warranty.
+          <strong>Direct Answer Summary:</strong> {site.name} provides free online quotes within a
+          few hours and same-day written quotes after an on-site visit. All jobs are billed at an
+          upfront flat rate (never hourly), backed by a 1-year workmanship warranty, Virginia DPOR
+          licensing, and general liability insurance. Cash, check, credit, and debit cards are
+          accepted.
+        </p>
+      </div>
+
+      <div class="section-header">
+        <h2 id="faq-heading">Common questions from {site.regionLabel} homeowners</h2>
+        <p>
+          Select any question below to view our full policy on estimates, project timelines, and
+          warranties.
         </p>
       </div>
 
@@ -119,11 +125,11 @@ const faqSchema = {
     <div class="container" style="text-align: center;">
       <h2 id="still-questions-heading">Have a question about a specific repair or renovation?</h2>
       <p style="max-width: 640px; margin-inline: auto;">
-        Send us your project details or call directly to speak with an experienced handyman in
-        Leesburg, VA.
+        Send us your project details or call directly to speak with an experienced handyman serving{' '}
+        {site.regionLabel}.
       </p>
       <div class="actions center">
-        <a class="btn btn-primary" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
+        <a class="btn btn-primary tabular" href={`tel:${site.contact.phone}`}>Call {site.contact.phoneDisplay}</a>
         <a class="btn btn-accent" href={`${homeUrl}contact/`}>Request Your Free Quote</a>
       </div>
     </div>
