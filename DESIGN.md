@@ -38,7 +38,7 @@ colors:
 typography:
   display:
     fontFamily: "Bitter, Georgia, Cambria, serif"
-    fontSize: "clamp(2.15rem, 4.4vw, 3.35rem)"
+    fontSize: "clamp(2.05rem, 3.6vw, 2.95rem)"
     fontWeight: 800
     lineHeight: 1.1
     letterSpacing: "-0.02em"
