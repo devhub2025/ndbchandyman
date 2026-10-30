@@ -992,20 +992,28 @@ main {
 
 @media (max-width: 960px) {
   .hero-doorstep {
-    padding-top: 230px;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 0;
     padding-bottom: 2.25rem;
     min-height: auto;
   }
+  .hero-backdrop {
+    position: relative;
+    inset: auto;
+    height: 290px;
+    width: 100%;
+    margin-bottom: 1.25rem;
+  }
   .hero-backdrop img {
-    object-position: center 15%;
+    object-position: center 18%;
   }
   .hero-backdrop::after {
     background: linear-gradient(
       180deg,
-      rgba(11, 20, 14, 0.08) 0%,
-      rgba(11, 20, 14, 0.35) 28%,
-      rgba(11, 20, 14, 0.92) 48%,
-      rgba(11, 20, 14, 0.97) 100%
+      rgba(15, 25, 18, 0.04) 0%,
+      rgba(15, 25, 18, 0.12) 68%,
+      rgba(15, 25, 18, 1) 100%
     );
   }
   .hero-stage,
