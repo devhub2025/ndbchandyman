@@ -403,6 +403,7 @@ main {
   color: #ffffff;
   font-size: clamp(2.05rem, 3.6vw, 2.95rem);
   line-height: 1.1;
+  min-height: 2.2em;
   margin: 0 0 1rem;
   max-width: 16ch;
 }

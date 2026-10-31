@@ -5,7 +5,9 @@ import site from '../data/site.js';
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const fullTitle = `Handyman Services in ${site.primaryCityState} | ${site.name}`;
-const description = `Licensed & insured master handyman serving ${site.primaryCity} and Northern Virginia. Flat-rate pricing, 20+ years experience, 1-year guarantee, and 24/7 emergency repairs.`;
+const description = site.licenseActive
+  ? `Licensed & insured master handyman serving ${site.primaryCity} and Northern Virginia. Flat-rate pricing, 20+ years experience, 1-year guarantee, and 24/7 emergency repairs.`
+  : `Insured master handyman serving ${site.primaryCity} and Northern Virginia. Flat-rate pricing, 20+ years experience, 1-year guarantee, and 24/7 emergency repairs.`;
 
 const featuredProjects = [
   {
@@ -80,7 +82,18 @@ const fairfaxPwcAreas = [
     <div class="container">
       <div class="hero-stage">
         <div class="hero-copy">
-          <h1 id="hero-heading">A Master Craftsman at Your Door—Never a Franchise Crew</h1>
+          <h1 id="hero-heading" data-slogans={JSON.stringify(site.slogans)}>{site.slogans[0]}</h1>
+          <script is:inline>
+            try {
+              const h = document.getElementById('hero-heading');
+              const s = JSON.parse(h?.dataset.slogans || '[]');
+              if (h && s.length) {
+                const i = (parseInt(sessionStorage.getItem('ndbc_slogan') ?? '-1', 10) + 1) % s.length;
+                sessionStorage.setItem('ndbc_slogan', String(i));
+                if (i > 0) h.textContent = s[i];
+              }
+            } catch {}
+          </script>
           <p class="lead">
             When you call {site.name}, a seasoned contractor with over 20 years of hands-on Virginia
             building experience knocks on your door, inspects the job personally, and hands you a
@@ -97,7 +110,7 @@ const fairfaxPwcAreas = [
               <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                 <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              Virginia DPOR Licensed &amp; Insured
+              {site.credentialBadge}
             </li>
             <li>
               <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -132,8 +145,8 @@ const fairfaxPwcAreas = [
               <dd>20+ Years in Virginia</dd>
             </div>
             <div class="dossier-row">
-              <dt>License &amp; Code</dt>
-              <dd>VA DPOR · USBC Compliant</dd>
+              <dt>Coverage &amp; Code</dt>
+              <dd>{site.credentialShort}</dd>
             </div>
             <div class="dossier-row">
               <dt>Pricing Model</dt>
@@ -160,11 +173,12 @@ const fairfaxPwcAreas = [
     <div class="container">
       <div class="ai-summary">
         <p>
-          <strong>Quick Summary:</strong> {site.name} is a Virginia DPOR-licensed, insured handyman
+          <strong>Quick Summary:</strong> {site.name} is an experienced, insured handyman
           and remodeling contractor based in {site.primaryCityState} serving Loudoun, Fairfax, and
-          Northern Virginia. Every repair and remodel is quoted at a fixed flat rate (never billed
-          by the hour) and backed by a written 1-year workmanship warranty and 24/7 emergency
-          support at <a class="tabular" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>.
+          Northern Virginia. Every repair and remodel is completed to Virginia USBC building standards,
+          quoted at a fixed flat rate (never billed by the hour), and backed by a written 1-year
+          workmanship warranty and 24/7 emergency support at{' '}
+          <a class="tabular" href={`tel:${site.contact.phone}`}>{site.contact.phoneDisplay}</a>.
         </p>
       </div>
 
@@ -172,7 +186,7 @@ const fairfaxPwcAreas = [
         <figure class="profile-figure">
           <img
             src={`${homeUrl}images/handyman-owner-inspecting.jpg`}
-            alt={`Experienced 60-year-old master handyman inspecting a wooden deck railing with a spirit level and tape measure in ${site.primaryCityState}`}
+            alt={`Experienced 60-year-old master handyman in a grey NDBC Handyman t-shirt inspecting a wooden deck railing in ${site.primaryCityState}`}
             width="1200"
             height="896"
             loading="lazy"
@@ -220,7 +234,7 @@ const fairfaxPwcAreas = [
                 </tr>
                 <tr>
                   <td><strong>Workmanship protection</strong></td>
-                  <td>1-year written guarantee + DPOR licensed</td>
+                  <td>{site.licenseActive ? '1-year written guarantee + DPOR licensed' : '1-year written guarantee + fully insured'}</td>
                   <td>Limited 30–90 day callback window</td>
                 </tr>
               </tbody>
@@ -319,7 +333,7 @@ const fairfaxPwcAreas = [
         </div>
         <div class="step-card">
           <span class="step-number">Step 3</span>
-          <h3>Licensed Craftsmanship</h3>
+          <h3>Code-Compliant Craftsmanship</h3>
           <p style="margin: 0;">We arrive on time, protect your floors and furnishings, and complete the work to Virginia USBC building code.</p>
         </div>
         <div class="step-card">

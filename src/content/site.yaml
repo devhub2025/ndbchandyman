@@ -6,16 +6,22 @@ logo: /ndbchandyman/logo.svg
 base: /ndbchandyman
 
 # ==============================================================================
-# ADDRESS PROFILE SWITCH (Single Source of Truth)
-# Change `activeAddressProfile` from "leesburg" to "winchester" (or set build
-# env var PUBLIC_ADDRESS_PROFILE=winchester) to switch headquarters NAP, titles,
-# meta tags, JSON-LD @graph, footer, contact form defaults, and /llms.txt.
+# SERVICE-AREA BUSINESS (SAB) & CREDENTIAL SWITCHES (Single Source of Truth)
+# - Street address is omitted to match Google Business Profile SAB rules.
+# - Set `licenseActive: true` (or env var PUBLIC_LICENSE_ACTIVE=true) once
+#   Virginia DPOR license renewal is finalized to restore active license badges.
 # ==============================================================================
 activeAddressProfile: leesburg
+licenseActive: false
+
+slogans:
+  - A Master Craftsman at Your Door—Never a Franchise Crew
+  - One Call. One Flat Rate. Done Right the First Time.
+  - 20+ Years of Virginia Craftsmanship—Guaranteed for a Full Year.
 
 addresses:
   leesburg:
-    streetAddress: 43103 Candlewick Sq
+    streetAddress: ""
     addressLocality: Leesburg
     addressRegion: VA
     postalCode: "20176"
@@ -24,30 +30,17 @@ addresses:
     regionLabel: Leesburg & Northern Virginia
     latitude: 39.1157
     longitude: -77.5636
-    isServiceAreaBusiness: false
-    mapUrl: https://maps.google.com/maps?cid=14056195057977221378&hl=en
-    bbbUrl: https://www.bbb.org/us/va/winchester/profile/handyman/ndbc-handyman-0241-236005043
-  winchester:
-    streetAddress: ""
-    addressLocality: Winchester
-    addressRegion: VA
-    postalCode: "22601"
-    addressCountry: US
-    county: Frederick County & Shenandoah Valley
-    regionLabel: Winchester, Loudoun & Northern Virginia
-    latitude: 39.1857
-    longitude: -78.1633
     isServiceAreaBusiness: true
     mapUrl: https://maps.google.com/maps?cid=14056195057977221378&hl=en
-    bbbUrl: https://www.bbb.org/us/va/winchester/profile/handyman/ndbc-handyman-0241-236005043
 
-# Legacy fallback block (auto-overridden by activeAddressProfile in src/data/site.js)
+# Primary NAP block (Service-Area Business in Leesburg, VA)
 nap:
-  streetAddress: 43103 Candlewick Sq
+  streetAddress: ""
   addressLocality: Leesburg
   addressRegion: VA
   postalCode: "20176"
   addressCountry: US
+  isServiceAreaBusiness: true
   mapUrl: https://maps.google.com/maps?cid=14056195057977221378&hl=en
 
 contact:

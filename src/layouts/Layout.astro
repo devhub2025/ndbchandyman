@@ -129,7 +129,7 @@ const businessNode: Record<string, unknown> = {
   priceRange: '$$',
   currenciesAccepted: 'USD',
   paymentAccepted: 'Cash, Check, Credit Card, Debit Card',
-  slogan: 'Flat-rate pricing, licensed Virginia contractor, 1-year workmanship guarantee',
+  slogan: site.slogans[0],
   address: postalAddress,
   hasMap: site.nap.mapUrl,
   founder: { '@id': founderId },
@@ -142,14 +142,6 @@ const businessNode: Record<string, unknown> = {
     'Residential Plumbing and Electrical Repairs',
     'Flat-Rate Handyman Pricing',
   ],
-  hasCredential: {
-    '@type': 'EducationalOccupationalCredential',
-    credentialCategory: ' Virginia Contractor License',
-    recognizedBy: {
-      '@type': 'GovernmentOrganization',
-      name: 'Virginia Department of Professional and Occupational Regulation (DPOR)',
-    },
-  },
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -221,19 +213,26 @@ if (site.nap.latitude && site.nap.longitude) {
   };
 }
 
-if (site.nap.bbbUrl) {
-  businessNode.sameAs = [site.nap.bbbUrl];
+if (site.licenseActive) {
+  businessNode.hasCredential = {
+    '@type': 'EducationalOccupationalCredential',
+    credentialCategory: 'Virginia Contractor License',
+    recognizedBy: {
+      '@type': 'GovernmentOrganization',
+      name: 'Virginia Department of Professional and Occupational Regulation (DPOR)',
+    },
+  };
 }
 
 const founderNode = {
   '@type': 'Person',
   '@id': founderId,
   name: 'Master Handyman & Owner-Operator',
-  jobTitle: 'Licensed Remodeling & Home Repair Contractor',
+  jobTitle: 'Remodeling & Home Repair Contractor',
   worksFor: { '@id': businessId },
   image: new URL(`${homeUrl}images/handyman-owner-doorstep.jpg`, siteOrigin).toString(),
   description:
-    'Experienced Virginia DPOR-licensed handyman and remodeling contractor with over 20 years of residential maintenance, carpentry, deck restoration, and remodeling experience in Northern Virginia.',
+    'Experienced Virginia handyman and remodeling contractor with over 20 years of residential maintenance, carpentry, deck restoration, and remodeling experience in Leesburg and Northern Virginia.',
 };
 
 const websiteNode = {
@@ -357,7 +356,7 @@ const fontCss = `
             <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
               <path d="M16.5 5.5L8.25 13.75L3.5 9" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            Virginia DPOR Licensed &amp; Insured
+            {site.credentialBadge}
           </li>
           <li>
             <svg class="icon-inline" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
@@ -466,7 +465,7 @@ const fontCss = `
               <li><a href={`${homeUrl}portfolio/`}>Before &amp; After Portfolio</a></li>
               <li><a href={`${homeUrl}tips/`}>Home Maintenance Pro Tips</a></li>
               <li><a href={`${homeUrl}faq/`}>Pricing &amp; Warranty FAQ</a></li>
-              <li><a href={`${homeUrl}about/`}>About &amp; DPOR Licensing</a></li>
+              <li><a href={`${homeUrl}about/`}>About &amp; Credentials</a></li>
               <li><a href={`${homeUrl}contact/`}>Request a Free Estimate</a></li>
             </ul>
           </div>
@@ -490,7 +489,7 @@ const fontCss = `
         <div class="footer-bottom">
           <span>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</span>
           <span>
-            Virginia DPOR Licensed Contractor · Insured · <a href={`${homeUrl}sitemap.xml`}>Sitemap</a> · <a href={`${homeUrl}llms.txt`}>AI Summary (llms.txt)</a>
+            {site.licenseActive ? 'Virginia DPOR Licensed Contractor · Insured' : 'Fully Insured · 20+ Years Experience · VA USBC Compliant'} · <a href={`${homeUrl}sitemap.xml`}>Sitemap</a> · <a href={`${homeUrl}llms.txt`}>AI Summary (llms.txt)</a>
           </span>
         </div>
       </div>

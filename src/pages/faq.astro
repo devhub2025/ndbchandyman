@@ -8,7 +8,7 @@ const siteOrigin = Astro.site ? Astro.site.origin : 'https://devhub2025.github.i
 
 const title = 'FAQ';
 const fullTitle = `Handyman Pricing, Guarantee & Service FAQs | ${site.shortName}`;
-const description = `Answers to common questions about ${site.name} flat-rate pricing, our 1-year workmanship guarantee, Virginia licensing, insurance, and ${site.regionLabel} service areas.`;
+const description = `Answers to common questions about ${site.name} flat-rate pricing, our 1-year workmanship guarantee, insurance coverage, and ${site.regionLabel} service areas.`;
 
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
@@ -37,9 +37,12 @@ const faqs = [
       'Completion time depends on project scope and material availability. For example, interior painting typically takes about 1 day per 50 square meters (~540 sq ft). Larger kitchen, bathroom, or basement remodels depend on fixture/cabinet delivery schedules and curing times (such as our mandatory 24-hour shower liner leak test before tiling).',
   },
   {
-    question: 'Are you licensed and insured in Virginia?',
-    answer:
-      'Yes. NDBC Handyman Services is licensed in Virginia under the Department of Professional and Occupational Regulation (DPOR) for general building maintenance, remodeling, and home repair, and we carry business and general liability insurance to protect your property while we are on duty.',
+    question: site.licenseActive
+      ? 'Are you licensed and insured in Virginia?'
+      : 'Are you insured and experienced with Virginia building codes?',
+    answer: site.licenseActive
+      ? 'Yes. NDBC Handyman Services is licensed in Virginia under the Department of Professional and Occupational Regulation (DPOR) for general building maintenance, remodeling, and home repair, and we carry business and general liability insurance to protect your property while we are on duty.'
+      : 'Yes. NDBC Handyman Services carries full business and general liability insurance to protect your property while we are on duty, and brings over 20 years of Virginia contractor experience performing general building maintenance, remodeling, and home repairs in compliance with the Virginia Uniform Statewide Building Code (USBC).',
   },
   {
     question: 'What payment methods do you accept?',
@@ -83,7 +86,7 @@ const faqSchema = {
       <h1>Frequently Asked Questions (Ask a Handyman)</h1>
       <p class="lead">
         Direct answers about how {site.name} quotes projects, our flat-rate pricing model, our
-        one-year workmanship guarantee, Virginia licensing, and emergency availability.
+        one-year workmanship guarantee, insurance coverage, and emergency availability.
       </p>
     </div>
   </section>
@@ -94,8 +97,8 @@ const faqSchema = {
         <p>
           <strong>Direct Answer Summary:</strong> {site.name} provides free online quotes within a
           few hours and same-day written quotes after an on-site visit. All jobs are billed at an
-          upfront flat rate (never hourly), backed by a 1-year workmanship warranty, Virginia DPOR
-          licensing, and general liability insurance. Cash, check, credit, and debit cards are
+          upfront flat rate (never hourly), backed by a 1-year workmanship warranty, Virginia USBC
+          code compliance, and general liability insurance. Cash, check, credit, and debit cards are
           accepted.
         </p>
       </div>

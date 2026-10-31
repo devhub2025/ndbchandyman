@@ -133,6 +133,11 @@ const gallerySchema = {
         name: proj.title,
         description: proj.summary,
         contentUrl: new URL(proj.image, siteOrigin).toString(),
+        creditText: site.name,
+        copyrightNotice: `© ${new Date().getFullYear()} ${site.name}`,
+        creator: {
+          '@id': `${new URL(homeUrl, siteOrigin).toString()}#business`,
+        },
       },
     })),
   },

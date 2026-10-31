@@ -5,8 +5,10 @@ import site from '../data/site.js';
 const base = import.meta.env.BASE_URL;
 const homeUrl = base.endsWith('/') ? base : `${base}/`;
 const title = 'About Us';
-const fullTitle = `About NDBC Handyman | Licensed & Insured in ${site.primaryCityState} & NoVA`;
-const description = `Locally owned handyman contractor in ${site.primaryCityState} with 20+ years of experience serving Northern Virginia. Licensed, insured, flat-fee pricing, and a 1-year workmanship guarantee.`;
+const fullTitle = site.licenseActive
+  ? `About NDBC Handyman | Licensed & Insured in ${site.primaryCityState} & NoVA`
+  : `About NDBC Handyman | 20+ Years Experience & Insured in ${site.primaryCityState}`;
+const description = `Locally owned handyman contractor in ${site.primaryCityState} with 20+ years of experience serving Northern Virginia. Fully insured, flat-fee pricing, and a 1-year workmanship guarantee.`;
 const breadcrumbs = [
   { name: 'Home', href: homeUrl },
   { name: 'About Us', href: `${homeUrl}about/` },
@@ -35,11 +37,11 @@ const breadcrumbs = [
     <div class="container">
       <div class="ai-summary">
         <p>
-          <strong>Entity Summary:</strong> {site.name} ({site.shortName}) is a Virginia
-          DPOR-licensed general building maintenance and remodeling contractor based in{' '}
-          {site.primaryCityState} with over 20 years of field experience across Northern Virginia.
-          We provide upfront flat-rate pricing, general liability insurance coverage, a written
-          1-year workmanship warranty, and 24/7 emergency plumbing and electrical dispatch.
+          <strong>Entity Summary:</strong> {site.name} ({site.shortName}) is an experienced general
+          building maintenance and remodeling contractor based in {site.primaryCityState} with over
+          20 years of field experience across Northern Virginia. We provide upfront flat-rate
+          pricing, Virginia USBC code-compliant craftsmanship, general liability insurance coverage,
+          a written 1-year workmanship warranty, and 24/7 emergency plumbing and electrical dispatch.
         </p>
       </div>
 
@@ -47,7 +49,7 @@ const breadcrumbs = [
         <figure class="profile-figure">
           <img
             src={`${homeUrl}images/handyman-owner-doorstep.jpg`}
-            alt={`Experienced 60-year-old master handyman greeting a homeowner at their front door in ${site.primaryCityState} with a written flat-rate estimate`}
+            alt={`Experienced 60-year-old master handyman in a grey NDBC Handyman t-shirt greeting a homeowner at their front door in ${site.primaryCityState} with a written flat-rate estimate`}
             width="1312"
             height="816"
             loading="eager"
@@ -77,9 +79,19 @@ const breadcrumbs = [
             <h3>Credentials &amp; Homeowner Protections</h3>
             <ul class="check-list">
               <li>
-                <strong>Virginia DPOR Licensed:</strong> Certified for general building maintenance,
-                remodeling contractor, handyman, and home repair work in compliance with the Virginia
-                Uniform Statewide Building Code (USBC).
+                {site.licenseActive ? (
+                  <>
+                    <strong>Virginia DPOR Licensed:</strong> Certified for general building
+                    maintenance, remodeling contractor, handyman, and home repair work in compliance
+                    with the Virginia Uniform Statewide Building Code (USBC).
+                  </>
+                ) : (
+                  <>
+                    <strong>20+ Years Virginia Building &amp; Code Experience:</strong> Seasoned
+                    general building maintenance, remodeling, and home repair craftsmanship performed
+                    in compliance with the Virginia Uniform Statewide Building Code (USBC).
+                  </>
+                )}
               </li>
               <li>
                 <strong>General Liability Insurance:</strong> Full business and general liability

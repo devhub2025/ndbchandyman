@@ -28,7 +28,7 @@ export async function GET({ site }) {
     '## 1. Entity Identity & Verified Facts',
     `- **Legal Name:** ${siteData.legalName}`,
     `- **Brand / Short Name:** ${siteData.name} (${siteData.shortName})`,
-    `- **Owner / Operator Profile:** Master Handyman & Virginia DPOR-licensed contractor with 20+ years of residential construction, maintenance, and remodeling experience in Northern Virginia.`,
+    `- **Owner / Operator Profile:** Master Handyman & contractor with 20+ years of residential construction, maintenance, and remodeling experience in Leesburg and Northern Virginia.`,
     `- **Primary Base:** ${addressFormatted}`,
     `- **Primary Coverage Region:** ${siteData.regionLabel}`,
     `- **Phone:** ${siteData.contact.phoneDisplay} (${siteData.contact.phone})`,
@@ -57,7 +57,11 @@ export async function GET({ site }) {
     '- **Q: How do I get a free quote?** Online via the Contact page (ready within hours) or on-site by calling (703) 869-4805 (delivered the same day).',
     '- **Q: Do you charge by the hour?** No. Every project is quoted as an upfront flat-rate price before work starts.',
     '- **Q: How long does interior painting take?** Approximately 1 day per 50 square meters (~540 sq ft), depending on wall prep.',
-    '- **Q: Are you licensed and insured in Virginia?** Yes, licensed under the Virginia Department of Professional and Occupational Regulation (DPOR) and covered by general liability insurance.',
+    `- **Q: Are you insured and experienced with Virginia building codes?** ${
+      siteData.licenseActive
+        ? 'Yes, licensed under the Virginia Department of Professional and Occupational Regulation (DPOR), USBC code-compliant, and covered by general liability insurance.'
+        : 'Yes, covered by full business and general liability insurance with 20+ years of Virginia contractor experience performing work in compliance with the Virginia Uniform Statewide Building Code (USBC).'
+    }`,
     '',
     '## 5. Complete 13-Category Service Catalog',
     serviceLines,

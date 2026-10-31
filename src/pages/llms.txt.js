@@ -36,7 +36,11 @@ export async function GET({ site }) {
     `- **Email:** ${siteData.contact.email}`,
     `- **Regular Hours:** ${siteData.hours.regular}`,
     `- **Emergency Service:** ${siteData.hours.emergency} (Plumbing, electrical, water leaks, pipe thawing)`,
-    `- **Licensing:** Virginia Department of Professional and Occupational Regulation (DPOR) licensed contractor; Virginia Uniform Statewide Building Code (USBC) compliant`,
+    `- **Standards & Experience:** ${
+      siteData.licenseActive
+        ? 'Virginia Department of Professional and Occupational Regulation (DPOR) licensed contractor; Virginia Uniform Statewide Building Code (USBC) compliant'
+        : '20+ years Virginia building & remodeling experience; Virginia Uniform Statewide Building Code (USBC) compliant'
+    }`,
     `- **Insurance:** Active business and general liability insurance covering on-duty work`,
     `- **Pricing Model:** Upfront flat-rate fixed pricing (never billed by the hour)`,
     `- **Warranty:** Written 1-year workmanship guarantee`,
@@ -59,7 +63,7 @@ export async function GET({ site }) {
     `- [Before & After Portfolio](${rootUrl}portfolio/): Real project photography of decks, patios, bathrooms, kitchens, and entryways across Northern Virginia`,
     `- [FAQ](${rootUrl}faq/): Direct answers on online vs. same-day on-site quotes, flat-rate pricing, 1-year guarantee, and payment options`,
     `- [Home Maintenance Pro Tips](${rootUrl}tips/): Contractor checklists for basement waterproofing, 24-hour shower pan leak testing, kitchen plumbing, and deck care`,
-    `- [About Us](${rootUrl}about/): Company background, Virginia DPOR licensing, liability insurance, flat-rate pricing, and 1-year guarantee`,
+    `- [About Us](${rootUrl}about/): Company background, 20+ years Virginia experience, liability insurance, flat-rate pricing, and 1-year guarantee`,
     `- [Contact / Free Estimate](${rootUrl}contact/): Interactive flat-rate estimate request form, phone, email, and 24/7 emergency dispatch`,
     `- [Full Technical Corpus (llms-full.txt)](${rootUrl}llms-full.txt): Complete Q&A, technical checklists, and service specifications for AI search engines`,
     '',
